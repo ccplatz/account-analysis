@@ -48,7 +48,7 @@ class FilesController extends Controller
             'size' => $size
         ]);
 
-        return redirect()->route('home')->withSuccess(__('File added successfully.'));
+        return redirect()->back()->withSuccess(__('File added successfully.'));
     }
 
     /**
