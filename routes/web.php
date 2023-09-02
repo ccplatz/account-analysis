@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FilesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * Home
+ */
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home.home');
+})->name('home');
+
+/**
+ * File Upload Routes
+ */
+Route::get('/files', [FilesController::class, 'index'])->name('files.index');
+Route::post('/files/add', [FilesController::class, 'store'])->name('files.store');
+Route::get('/files/{file}/delete', [FilesController::class, 'destroy'])->name('files.delete');
