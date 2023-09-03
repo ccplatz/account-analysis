@@ -37,7 +37,12 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        dd('test');
+        return view('accounts.show')->with(
+            [
+                'account' => $account,
+                'transactions' => $account->transactions
+            ]
+        );
     }
 
     /**
