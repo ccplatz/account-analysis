@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\FilesController;
+use App\Http\Controllers\ImportCsvController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,3 +35,9 @@ Route::get('/files/{file}/delete', [FilesController::class, 'destroy'])->name('f
  * Account routes
  */
 Route::resource('/accounts', AccountController::class);
+
+/**
+ * Import csv routes
+ */
+Route::get('/import/{file}/map-fields', [ImportCsvController::class, 'mapFields'])->name('import.map-fields');
+Route::post('/import/save-mapping', [ImportCsvController::class, 'saveMapping'])->name('import.save-mapping');

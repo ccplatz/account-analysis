@@ -44,7 +44,7 @@
                             <td width="10%">{{ $file->type }}</td>
                             <td width="10%">
                                 <a href="{{ route('files.delete', $file) }}"><i class="bi bi-trash3"></i></a>
-                                <a href=""><i class="bi bi-bar-chart"></i></a>
+                                <a href="{{ route('import.map-fields', $file) }}"><i class="bi bi-bar-chart"></i></a>
                             </td>
                         </tr>
                     @endforeach
