@@ -11,7 +11,7 @@ class StoreAccountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => 'required|string|min:3|max:100',
+            'iban' => 'required|string|min:15|max:32',
+            'bank' => 'required|string|min:3|max:100',
+
         ];
     }
 }

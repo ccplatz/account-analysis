@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
+use Illuminate\Database\QueryException;
 
 class AccountController extends Controller
 {
@@ -13,15 +14,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        //dd(session()->has('success'));
+        return view('accounts.index')->with('accounts', Account::all());
     }
 
     /**
@@ -29,7 +23,13 @@ class AccountController extends Controller
      */
     public function store(StoreAccountRequest $request)
     {
-        //
+        try {
+            Account::create($request->validated());
+        } catch (QueryException $th) {
+            return redirect()->back()->withErrors('An error occured. Account could not be created.');
+        }
+
+        return redirect()->back()->withSuccess('Account created.');
     }
 
     /**
@@ -37,7 +37,7 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        //
+        dd('test');
     }
 
     /**
@@ -61,6 +61,12 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        //
+        try {
+            $account->delete();
+        } catch (QueryException $th) {
+            return redirect()->back()->withErrors('An error occured. Account could not be deleted.');
+        }
+
+        return redirect()->back()->withSuccess('Account deleted.');
     }
 }
