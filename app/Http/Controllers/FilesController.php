@@ -31,6 +31,8 @@ class FilesController extends Controller
      */
     public function store(StoreFileRequest $request)
     {
+        // TODO: Exception handling!!
+
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
         $path = $file->storeAs(
@@ -48,17 +50,20 @@ class FilesController extends Controller
             'size' => $size
         ]);
 
-        return redirect()->back()->withSuccess(__('File added successfully.'));
+        return redirect()->back()->withSuccess('File added successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  mixed $file
+     * @return void
      */
     public function destroy(File $file)
     {
         Storage::delete($file->path);
         $file->delete();
 
-        return redirect()->back()->withSuccess(__('File deleted.'));
+        return redirect()->back()->withSuccess('File deleted.');
     }
 }

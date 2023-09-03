@@ -25,6 +25,7 @@ Route::get('/', function () {
 /**
  * File Upload outes
  */
+// TODO: Rename routes, use same routes as for source controller
 Route::get('/files', [FilesController::class, 'index'])->name('files.index');
 Route::post('/files/add', [FilesController::class, 'store'])->name('files.store');
 Route::get('/files/{file}/delete', [FilesController::class, 'destroy'])->name('files.delete');
