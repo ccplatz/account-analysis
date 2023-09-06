@@ -12,9 +12,10 @@ class Transaction extends Model
         'account_id',
         'date',
         'name_other_party',
+        'iban_other_party',
         'payment_type',
         'purpose',
-        'amount',
+        'value',
         'negative',
         'balance_after'
     ];

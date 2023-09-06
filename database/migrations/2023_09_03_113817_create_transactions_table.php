@@ -14,13 +14,12 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->date('date');
+            $table->timestamp('date');
             $table->string('name_other_party');
             $table->string('iban_other_party');
             $table->string('payment_type');
             $table->string('purpose');
             $table->integer('value');
-            $table->boolean('negative');
             $table->integer('balance_after');
             $table->timestamps();
         });

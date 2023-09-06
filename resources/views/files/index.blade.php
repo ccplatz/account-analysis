@@ -44,7 +44,15 @@
                             <td width="10%">{{ $file->type }}</td>
                             <td width="10%">
                                 <a href="{{ route('files.delete', $file) }}"><i class="bi bi-trash3"></i></a>
-                                <a href="{{ route('import.map-fields', $file) }}"><i class="bi bi-bar-chart"></i></a>
+                                <a href="{{ route('import.choose-account') }}"
+                                    onclick="event.preventDefault();
+                                document.getElementById('import-file-{{ $file->id }}').submit();"><i
+                                        class="bi bi-bar-chart"></i></a>
+                                <form id="import-file-{{ $file->id }}" action="{{ route('import.choose-account') }}"
+                                    method="POST" style="display: none;">
+                                    @csrf
+                                    <input type="hidden" name="file" value="{{ $file->id }}">
+                                </form>
                             </td>
                         </tr>
                     @endforeach

@@ -39,5 +39,6 @@ Route::resource('/accounts', AccountController::class);
 /**
  * Import csv routes
  */
-Route::get('/import/{file}/map-fields', [ImportCsvController::class, 'mapFields'])->name('import.map-fields');
-Route::post('/import/save-mapping', [ImportCsvController::class, 'saveMapping'])->name('import.save-mapping');
+Route::post('/import/choose-account', [ImportCsvController::class, 'chooseAccount'])->name('import.choose-account');
+Route::post('/import/map-fields', [ImportCsvController::class, 'mapFields'])->name('import.map-fields');
+Route::post('/import/store-transactions', [ImportCsvController::class, 'storeTransactions'])->name('import.store-transactions');
