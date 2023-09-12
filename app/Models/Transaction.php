@@ -36,7 +36,24 @@ class Transaction extends Model
         );
     }
 
+    /**
+     * Get the value attribute.
+     *
+     * @return Attribute
+     */
     protected function value(): Attribute
+    {
+        return Attribute::make(
+            get: fn(float $value) => number_format($value, 2, ',', '.')
+        );
+    }
+
+    /**
+     * Get the balance after attribute.
+     *
+     * @return Attribute
+     */
+    protected function balanceAfter(): Attribute
     {
         return Attribute::make(
             get: fn(float $value) => number_format($value, 2, ',', '.')
