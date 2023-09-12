@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->string('iban_other_party');
             $table->string('payment_type');
             $table->string('purpose');
-            $table->integer('value');
-            $table->integer('balance_after');
+            $table->float('value');
+            $table->float('balance_after');
             $table->timestamps();
         });
     }

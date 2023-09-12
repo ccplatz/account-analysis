@@ -39,8 +39,7 @@ class AccountController extends Controller
     {
         return view('accounts.show')->with(
             [
-                'account' => $account,
-                'transactions' => $account->transactions
+                'account' => $account
             ]
         );
     }

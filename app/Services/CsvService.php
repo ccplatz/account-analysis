@@ -66,7 +66,7 @@ class CsvService
         foreach ($reducedData as $data) {
             $data['date'] = Carbon::create($data['date']);
             $data['purpose'] = Str::squish($data['purpose']);
-            $data['value'] = floatval($data['value']);
+            $data['value'] = floatval(str_replace(",", ".", $data['value']));
             $data['balance_after'] = floatval($data['balance_after']);
             $data['account_id'] = $account->id;
 

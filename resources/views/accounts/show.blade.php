@@ -33,16 +33,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($transactions as $transaction)
+                    @foreach ($account->transactions as $transaction)
                         <tr>
                             <td width="3%">{{ $transaction->id }}</td>
                             <td>{{ $transaction->date }}</a></td>
-                            <td width="15%">{{ $transaction->other_party }}</td>
+                            <td width="15%">{{ $transaction->name_other_party }}</td>
                             <td width="10%">{{ $transaction->payment_type }}</td>
-                            <td width="10%">{{ $transaction->purpose }}</td>
+                            <td width="30%">{{ $transaction->purpose }}</td>
                             <td width="10%">
-                                <span class="text-{{ $transaction->negative ? 'danger' : 'success' }}">
-                                    {{ $transaction->negative ? '-' : '' }}{{ $transaction->value }}
+                                <span class="text-{{ $transaction->value < 0 ? 'danger' : 'success' }}">
+                                    {{ $transaction->value }}
                                 </span>
                             </td>
                             <td width="10%">{{ $transaction->balance_after }}</td>
