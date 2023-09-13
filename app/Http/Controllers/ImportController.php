@@ -9,12 +9,25 @@ use App\Http\Requests\StoreTransactionsRequest;
 use App\Models\Account;
 use App\Models\File;
 use App\Services\CsvService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use App\Services\GetFileContentService;
+use App\Services\ImportService;
 
-class ImportCsvController extends Controller
+class ImportController extends Controller
 {
+    /**
+     *  @var CsvService
+     */
     private ?CsvService $csvService = null;
+
+    /**
+     * @var GetFileContentService
+     */
+    private ?GetFileContentService $getFileContentService = null;
+
+    /**
+     * @var ImportService
+     */
+    private ?ImportService $importService = null;
 
     private const FIELDS_TO_MAP = [
         'date',
@@ -32,9 +45,11 @@ class ImportCsvController extends Controller
      * @param  mixed $csvService
      * @return void
      */
-    public function __construct(CsvService $csvService)
+    public function __construct(CsvService $csvService, GetFileContentService $getFileContentService, ImportService $importService)
     {
         $this->csvService = $csvService;
+        $this->getFileContentService = $getFileContentService;
+        $this->importService = $importService;
     }
 
     /**
@@ -65,11 +80,12 @@ class ImportCsvController extends Controller
         $account = Account::findOrFail($request->validated()['account']);
 
         try {
-            $csvFields = $this->csvService->getFieldsFromFile($file);
+            $lines = $this->getFileContentService->getLinesFromFile($file);
         } catch (OpenFileException $e) {
             report($e);
             return redirect()->back()->withErrors($e->getMessage());
         }
+        $csvFields = $this->csvService->getValuesFromCsvString($lines[0]);
 
         return view('import.map-fields')->with(
             [
@@ -86,10 +102,11 @@ class ImportCsvController extends Controller
         $validated = $storeTransactionsRequest->validated();
         $file = File::findOrFail($validated['file']);
         $account = Account::findOrFail($validated['account']);
-        Arr::forget($validated, ['file', 'account']);
-        $mappings = $validated;
+        $mappings = $storeTransactionsRequest->safe()->except(['file', 'account']);
 
-        $this->csvService->storeTransactions($file, $account, $mappings);
+        $lines = $this->getFileContentService->getLinesFromFile($file);
+        $rawData = $this->csvService->getAssociativeArrayFromLines($lines);
+        $this->importService->storeTransactions($rawData, $account, $mappings);
 
         return redirect()->route('home');
     }

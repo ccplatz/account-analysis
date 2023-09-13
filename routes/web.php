@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\FilesController;
-use App\Http\Controllers\ImportCsvController;
+use App\Http\Controllers\ImportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +39,6 @@ Route::resource('/accounts', AccountController::class);
 /**
  * Import csv routes
  */
-Route::post('/import/choose-account', [ImportCsvController::class, 'chooseAccount'])->name('import.choose-account');
-Route::post('/import/map-fields', [ImportCsvController::class, 'mapFields'])->name('import.map-fields');
-Route::post('/import/store-transactions', [ImportCsvController::class, 'storeTransactions'])->name('import.store-transactions');
+Route::post('/import/choose-account', [ImportController::class, 'chooseAccount'])->name('import.choose-account');
+Route::post('/import/map-fields', [ImportController::class, 'mapFields'])->name('import.map-fields');
+Route::post('/import/store-transactions', [ImportController::class, 'storeTransactions'])->name('import.store-transactions');
