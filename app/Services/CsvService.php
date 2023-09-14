@@ -26,25 +26,52 @@ class CsvService
         return $fields;
     }
 
+    /**
+     * Get an array of array with header fields as keys and values.
+     *
+     * @param  mixed $lines
+     * @return array
+     */
     public function getAssociativeArrayFromLines(array $lines): array
     {
-        $header = str_getcsv(array_shift($lines), ';');
+        $header = $this->getValuesFromCsvString(array_shift($lines));
         $csvData = [];
 
         foreach ($lines as $line) {
-            if (!Str::contains($line, self::CSV_SEPARATOR)) {
+            if (!$this->isValidCsvLine($line)) {
                 continue;
             }
-
-            $values = str_getcsv($line, self::CSV_SEPARATOR);
-
-            if (count($values) !== count($header)) {
-                throw new WrongValueCoundException('The number of values is not correct.');
-            }
-
-            $csvData[] = array_combine($header, $values);
+            $values = $this->getValuesFromCsvString($line);
+            $csvData[] = $this->mergeHeaderAndValues($header, $values);
         }
 
         return $csvData;
+    }
+
+    /**
+     * Check if the given line is a valid csv line.
+     *
+     * @param  mixed $line
+     * @return bool
+     */
+    private function isValidCsvLine($line): bool
+    {
+        return Str::contains($line, self::CSV_SEPARATOR);
+    }
+
+    /**
+     * Merge the header fields and values to an array.
+     *
+     * @param  mixed $header
+     * @param  mixed $values
+     * @return array
+     */
+    private function mergeHeaderAndValues(array $header, array $values): array
+    {
+        if (count($values) !== count($header)) {
+            throw new WrongValueCoundException('The number of values is not correct.');
+        }
+
+        return array_combine($header, $values);
     }
 }
