@@ -17,7 +17,9 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'description' => $this->faker->words(3, true) . ' account',
+            'iban' => $this->faker->iban(),
+            'bank' => $this->faker->company() . ' bank'
         ];
     }
 }
