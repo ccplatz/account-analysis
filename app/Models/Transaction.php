@@ -22,19 +22,16 @@ class Transaction extends Model
         'balance_after'
     ];
 
-    use HasFactory;
-
     /**
-     * Get the date attribute.
+     * The attributes that should be cast.
      *
-     * @return Attribute
+     * @var array
      */
-    protected function date(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => Carbon::parse($value)->format('d.m.Y')
-        );
-    }
+    protected $casts = [
+        'date' => 'date:d.m.Y',
+    ];
+
+    use HasFactory;
 
     /**
      * Get the value attribute.

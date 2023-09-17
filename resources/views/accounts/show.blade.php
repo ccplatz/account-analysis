@@ -36,7 +36,7 @@
                     @foreach ($account->transactions as $transaction)
                         <tr>
                             <td width="3%">{{ $transaction->id }}</td>
-                            <td width="10%">{{ $transaction->date }}</a></td>
+                            <td width="10%">{{ $transaction->toArray()['date'] }}</a></td>
                             <td width="15%">{{ $transaction->name_other_party }}</td>
                             <td width="10%">{{ $transaction->payment_type }}</td>
                             <td>{{ $transaction->purpose }}</td>

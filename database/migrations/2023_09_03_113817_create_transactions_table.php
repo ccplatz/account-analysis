@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('date');
+            $table->date('date');
             $table->string('name_other_party');
             $table->string('iban_other_party');
             $table->string('payment_type');

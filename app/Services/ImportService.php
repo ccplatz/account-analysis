@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Account;
 use App\Models\Transaction;
+use Brick\Math\Exception\NumberFormatException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -41,14 +42,27 @@ class ImportService
         $mappedData = [];
 
         foreach ($rawData as $line) {
-            $newLine = [];
-            foreach ($mappings as $newKey => $oldKey) {
-                $newLine[$newKey] = $line[$oldKey];
-            }
-            $mappedData[] = $newLine;
+            $mappedData[] = $this->buildNewLine($mappings, $line);
         }
 
         return $mappedData;
+    }
+
+    /**
+     * Build a new line from mapping and raw data.
+     *
+     * @param  mixed $mappings
+     * @param  mixed $line
+     * @return array
+     */
+    private function buildNewLine(array $mappings, array $line): array
+    {
+        $newLine = [];
+        foreach ($mappings as $newKey => $oldKey) {
+            $newLine[$newKey] = $line[$oldKey];
+        }
+
+        return $newLine;
     }
 
     /**
@@ -63,15 +77,31 @@ class ImportService
         $transactions = [];
 
         foreach ($mappedData as $data) {
-            $data['date'] = Carbon::create($data['date']);
+            $data['date'] = Carbon::createFromFormat('d.m.Y', $data['date'])->toDateString();
             $data['purpose'] = Str::squish($data['purpose']);
-            $data['value'] = floatval(str_replace(",", ".", $data['value']));
-            $data['balance_after'] = floatval($data['balance_after']);
+            $data['value'] = $this->getFloatFromGermanFormatedNumberString($data['value']);
+            $data['balance_after'] = $this->getFloatFromGermanFormatedNumberString($data['balance_after']);
             $data['account_id'] = $account->id;
 
             $transactions[] = $data;
         }
 
         return $transactions;
+    }
+
+    /**
+     * Get float from german decimal format.
+     *
+     * @param  mixed $value
+     * @return float
+     */
+    private function getFloatFromGermanFormatedNumberString($value): float
+    {
+        $formatedValue = Str::replace(".", "", $value);
+        $formatedValue = Str::replace(",", ".", $formatedValue);
+        if (!is_numeric($formatedValue)) {
+            throw new NumberFormatException('The given value is not a valid number.');
+        }
+        return floatval($formatedValue);
     }
 }
