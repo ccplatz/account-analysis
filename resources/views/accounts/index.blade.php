@@ -49,7 +49,7 @@
                             <td width="3%">{{ $account->id }}</td>
                             <td><a href="{{ route('accounts.show', $account) }}">{{ $account->description }}</a></td>
                             <td width="15%">{{ $account->iban }}</td>
-                            <td width="10%">{{ $account->bank }}</td>
+                            <td width="20%">{{ $account->bank }}</td>
                             <td width="10%">
                                 <a href="{{ route('accounts.destroy', $account) }}"
                                     onclick="event.preventDefault();

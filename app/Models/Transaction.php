@@ -60,8 +60,16 @@ class Transaction extends Model
     /**
      * Get the account for the transaction.
      */
-    public function transactions(): BelongsTo
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the category for the transaction.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

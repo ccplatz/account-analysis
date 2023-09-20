@@ -30,6 +30,7 @@
                         <th scope="col">Purpose</th>
                         <th scope="col">Value</th>
                         <th scope="col">Balance after</th>
+                        <th scope="col">Category</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +50,9 @@
                                 <span class="text-{{ $transaction->balance_after < 0 ? 'danger' : 'success' }}">
                                     {{ $transaction->balance_after }} €
                                 </span>
+                            </td>
+                            <td width="15%">
+                                {{ $transaction->category->description }}
                             </td>
                         </tr>
                     @endforeach

@@ -19,7 +19,7 @@ class AccountFactory extends Factory
         return [
             'description' => $this->faker->words(3, true) . ' account',
             'iban' => $this->faker->iban(),
-            'bank' => $this->faker->company() . ' bank'
+            'bank' => $this->faker->company() . ' Bank'
         ];
     }
 }

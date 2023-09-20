@@ -28,6 +28,9 @@
                 <li class="nav-item"> <a href="{{ route('accounts.index') }}"
                         class="nav-link {{ Route::is('accounts.index') ? 'active' : '' }}">Accounts</a>
                 </li>
+                <li class="nav-item"> <a href="{{ route('categories.index') }}"
+                        class="nav-link {{ Route::is('categories.index') ? 'active' : '' }}">Categories</a>
+                </li>
             </ul>
         </header>
 

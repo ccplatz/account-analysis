@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ImportController;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,7 @@ Route::get('/files/{file}/delete', [FilesController::class, 'destroy'])->name('f
 /**
  * Account routes
  */
-Route::resource('/accounts', AccountController::class);
+Route::resource('/accounts', AccountController::class); // TODO: Set except routes
 
 /**
  * Import csv routes
@@ -42,3 +43,8 @@ Route::resource('/accounts', AccountController::class);
 Route::post('/import/choose-account', [ImportController::class, 'chooseAccount'])->name('import.choose-account');
 Route::post('/import/map-fields', [ImportController::class, 'mapFields'])->name('import.map-fields');
 Route::post('/import/store-transactions', [ImportController::class, 'storeTransactions'])->name('import.store-transactions');
+
+/**
+ * Categories routes
+ */
+Route::resource('/categories', CategoryController::class); // TODO: Set except routes
