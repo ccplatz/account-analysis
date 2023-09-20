@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('type');
             $table->string('size');
+            $table->boolean('imported')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')

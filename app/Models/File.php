@@ -12,8 +12,30 @@ class File extends Model
         'user_id',
         'name',
         'type',
-        'size'
+        'size',
+        'imported'
     ];
 
     use HasFactory;
+
+    /**
+     * Set file to imported.
+     *
+     * @return void
+     */
+    public function setToImported(): void
+    {
+        $this->imported = true;
+        $this->save();
+    }
+
+    /**
+     * Return the status of the file.
+     *
+     * @return bool
+     */
+    public function isImported(): bool
+    {
+        return $this->imported;
+    }
 }

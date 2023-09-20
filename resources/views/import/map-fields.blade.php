@@ -15,8 +15,8 @@
                         <label for="{{ $field }}"
                             class="form-label">{{ Str::ucfirst(Str::replace('_', ' ', $field)) }}</label>:
                         <select class="form-select" name="{{ $field }}" id="{{ $field }}">
-                            @foreach ($csvFields as $csvField)
-                                <option value="{{ $csvField }}">{{ $csvField }}</option>
+                            @foreach ($headerFieldsFromCsvFile as $fieldName)
+                                <option value="{{ $fieldName }}">{{ $fieldName }}</option>
                             @endforeach
                         </select>
                     </div>

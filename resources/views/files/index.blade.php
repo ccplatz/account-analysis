@@ -42,17 +42,23 @@
                             <td width="15%">{{ $file->user }}</td>
                             <td width="10%">{{ $file->size }}</td>
                             <td width="10%">{{ $file->type }}</td>
-                            <td width="10%">
+                            <td width="10%" class="fs-5">
                                 <a href="{{ route('files.delete', $file) }}"><i class="bi bi-trash3"></i></a>
-                                <a href="{{ route('import.choose-account') }}"
-                                    onclick="event.preventDefault();
-                                document.getElementById('import-file-{{ $file->id }}').submit();"><i
-                                        class="bi bi-bar-chart"></i></a>
-                                <form id="import-file-{{ $file->id }}" action="{{ route('import.choose-account') }}"
-                                    method="POST" style="display: none;">
-                                    @csrf
-                                    <input type="hidden" name="file" value="{{ $file->id }}">
-                                </form>
+                                @if ($file->isImported())
+                                    <i class="bi bi-database-check"></i>
+                                @else
+                                    <a href="{{ route('import.choose-account') }}"
+                                        onclick="event.preventDefault();
+                                document.getElementById('import-file-{{ $file->id }}').submit();">
+                                        <i class="bi bi-database-add"></i>
+                                    </a>
+                                    <form id="import-file-{{ $file->id }}"
+                                        action="{{ route('import.choose-account') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        <input type="hidden" name="file" value="{{ $file->id }}">
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -85,12 +85,12 @@ class ImportController extends Controller
             report($e);
             return redirect()->back()->withErrors($e->getMessage());
         }
-        $csvFields = $this->csvService->getValuesFromCsvString($lines[0]);
+        $headerFieldsFromCsvFile = $this->csvService->getValuesFromCsvString($lines[0]);
 
         return view('import.map-fields')->with(
             [
                 'fieldsToMap' => self::FIELDS_TO_MAP,
-                'csvFields' => $csvFields,
+                'headerFieldsFromCsvFile' => $headerFieldsFromCsvFile,
                 'file' => $file,
                 'account' => $account,
             ]
@@ -107,6 +107,7 @@ class ImportController extends Controller
         $lines = $this->getFileContentService->getLinesFromFile($file);
         $rawData = $this->csvService->getAssociativeArrayFromLines($lines);
         $this->importService->storeTransactions($rawData, $account, $mappings);
+        $file->setToImported();
 
         return redirect()->route('home');
     }
