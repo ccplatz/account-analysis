@@ -10,6 +10,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'description'
+    ];
+
     /**
      * Get the transactions for the category.
      */
