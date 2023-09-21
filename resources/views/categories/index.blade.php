@@ -45,7 +45,17 @@
                                 </span>
                             </td>
                             <td width="10%" class="fs-5">
-                                <a href="{{ route('categories.destroy', $category) }}"><i class="bi bi-trash3"></i></a>
+                                <a href="{{ route('categories.destroy', $category) }}"
+                                    onclick="event.preventDefault();
+                                document.getElementById('delete-category-{{ $category->id }}').submit();"><i
+                                        class="bi bi-trash3"></i></a>
+                                <form id="delete-category-{{ $category->id }}"
+                                    action="{{ route('categories.destroy', $category) }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="file" value="{{ $category->id }}">
+                                </form>
                             </td>
                         </tr>
                     @endforeach

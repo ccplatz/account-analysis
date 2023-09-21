@@ -52,7 +52,9 @@
                                 </span>
                             </td>
                             <td width="15%">
-                                {{ $transaction->category->description }}
+                                @if ($transaction->category)
+                                    {{ $transaction->category->description }}
+                                @endif
                             </td>
                         </tr>
                     @endforeach
