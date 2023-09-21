@@ -38,10 +38,10 @@ class Transaction extends Model
      *
      * @return Attribute
      */
-    protected function value(): Attribute
+    protected function valueGerman(): Attribute
     {
         return Attribute::make(
-            get: fn(float $value) => number_format($value, 2, ',', '.')
+            get: fn() => number_format($this->value, 2, ',', '.')
         );
     }
 
@@ -50,10 +50,10 @@ class Transaction extends Model
      *
      * @return Attribute
      */
-    protected function balanceAfter(): Attribute
+    protected function balanceAfterGerman(): Attribute
     {
         return Attribute::make(
-            get: fn(float $value) => number_format($value, 2, ',', '.')
+            get: fn() => number_format($this->value, 2, ',', '.')
         );
     }
 

@@ -31,4 +31,22 @@ class CategoryTest extends TestCase
 
         $this->assertDatabaseHas('categories', $category->toArray());
     }
+
+    public function testCategorySumShownOnOverview(): void
+    {
+        $expected = number_format(Category::first()->transactions->sum('value'), 2, ',', '.');
+
+        $response = $this->get(route('categories.index'));
+
+        $response->assertSee($expected);
+    }
+
+    public function testCategoryNumberOfTransactionsShownOnOverview(): void
+    {
+        $expected = Category::first()->transactions->count();
+
+        $response = $this->get(route('categories.index'));
+
+        $response->assertSee($expected);
+    }
 }

@@ -38,8 +38,12 @@
                         <tr>
                             <td width="3%">{{ $category->id }}</td>
                             <td>{{ $category->description }}</td>
-                            <td width="35%"></td>
-                            <td width="15%"></td>
+                            <td>{{ $category->transactions->count() }}</td>
+                            <td width="15%">
+                                <span class="text-{{ $category->transactions->sum('value') < 0 ? 'danger' : 'success' }}">
+                                    {{ number_format($category->transactions->sum('value'), 2, ',', '.') }}
+                                </span>
+                            </td>
                             <td width="10%" class="fs-5">
                                 <a href="{{ route('categories.destroy', $category) }}"><i class="bi bi-trash3"></i></a>
                             </td>

@@ -43,12 +43,12 @@
                             <td>{{ $transaction->purpose }}</td>
                             <td width="10%">
                                 <span class="text-{{ $transaction->value < 0 ? 'danger' : 'success' }}">
-                                    {{ $transaction->value }} €
+                                    {{ $transaction->valueGerman }} €
                                 </span>
                             </td>
                             <td width="10%">
                                 <span class="text-{{ $transaction->balance_after < 0 ? 'danger' : 'success' }}">
-                                    {{ $transaction->balance_after }} €
+                                    {{ $transaction->balance_afterGerman }} €
                                 </span>
                             </td>
                             <td width="15%">
