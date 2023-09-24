@@ -31,6 +31,7 @@
                         <th scope="col">Value</th>
                         <th scope="col">Balance after</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,18 @@
                                 @if ($transaction->category)
                                     {{ $transaction->category->description }}
                                 @endif
+                            </td>
+                            <td class="fs-5">
+                                <a href="{{ route('transactions.destroy', $transaction) }}"
+                                    onclick="event.preventDefault();
+                                document.getElementById('delete-form-{{ $transaction->id }}').submit();"><i
+                                        class="bi bi-trash3"></i></a>
+                                <form id="delete-form-{{ $transaction->id }}"
+                                    action="{{ route('transactions.destroy', $transaction) }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             </td>
                         </tr>
                     @endforeach

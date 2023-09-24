@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,3 +49,8 @@ Route::post('/import/store-transactions', [ImportController::class, 'storeTransa
  * Categories routes
  */
 Route::resource('/categories', CategoryController::class); // TODO: Set except routes
+
+/**
+ * Transactions routes
+ */
+Route::resource('/transactions', TransactionController::class); // TODO: Set except routes
