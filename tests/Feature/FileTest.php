@@ -53,4 +53,21 @@ class FileTest extends TestCase
 
         Storage::disk('local')->assertExists($file->path);
     }
+
+    public function testDeleteFile()
+    {
+        Storage::fake('local');
+
+        $response = $this->post(route('files.store'), [
+            'file' => UploadedFile::fake()->create('test.csv')
+        ]);
+
+        $file = File::where('name', 'test.csv')->first();
+
+        Storage::disk('local')->assertExists($file->path);
+
+        $response = $this->get(route('files.delete', $file));
+
+        Storage::disk('local')->assertMissing($file->path);
+    }
 }
