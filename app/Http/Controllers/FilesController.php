@@ -32,6 +32,7 @@ class FilesController extends Controller
     public function store(StoreFileRequest $request)
     {
         // TODO: Exception handling!!
+        // TODO: Move to service class
 
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
