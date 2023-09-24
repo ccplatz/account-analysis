@@ -18,7 +18,7 @@ class AccountFactory extends Factory
     {
         return [
             'description' => $this->faker->words(3, true) . ' account',
-            'iban' => $this->faker->iban(),
+            'iban' => $this->faker->iban('DE', '', 15),
             'bank' => $this->faker->company() . ' Bank'
         ];
     }
