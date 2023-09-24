@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
@@ -17,8 +18,10 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $moreThanTwoCharsValidator = fn($word) => Str::length($word) > 2;
+
         return [
-            'description' => fake()->words(1, true)
+            'description' => Str::ucfirst(fake()->valid($moreThanTwoCharsValidator)->words(1, true))
         ];
     }
 }
