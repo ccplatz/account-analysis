@@ -25,11 +25,11 @@ class CategoryTest extends TestCase
 
     public function testCategoryCanBeCreated(): void
     {
-        $category = Category::factory()->make();
+        $expected = Category::factory()->make();
 
-        $response = $this->post(route('categories.store'), $category->toArray());
+        $response = $this->post(route('categories.store'), $expected->toArray());
 
-        $this->assertDatabaseHas('categories', $category->toArray());
+        $this->assertDatabaseHas('categories', $expected->toArray());
     }
 
     public function testCategorySumShownOnOverview(): void
