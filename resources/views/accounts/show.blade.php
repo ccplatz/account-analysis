@@ -54,7 +54,11 @@
                             </td>
                             <td width="15%">
                                 <x-select id="categorySelect-{{ $transaction->id }}" class="category__select form-select"
-                                    :options="$categories" :selected="$transaction->category" />
+                                    :options="$categories" :selected="$transaction->category">
+                                    <option value="">Set category</option>
+                                </x-select>
+                                <input type="hidden" name="transaction"
+                                    id="transactionCategorySelect-{{ $transaction->id }}" value="{{ $transaction->id }}">
                             </td>
                             <td class="fs-5">
                                 <a href="{{ route('transactions.destroy', $transaction) }}"

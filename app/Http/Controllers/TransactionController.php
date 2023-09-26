@@ -53,7 +53,10 @@ class TransactionController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        return $transaction;
+        $transaction->category_id = $request->validated('category');
+        $transaction->save();
+
+        return;
     }
 
     /**

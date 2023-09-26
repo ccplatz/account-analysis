@@ -53,7 +53,7 @@ class Transaction extends Model
     protected function balanceAfterGerman(): Attribute
     {
         return Attribute::make(
-            get: fn() => number_format($this->value, 2, ',', '.')
+            get: fn() => number_format($this->balance_after, 2, ',', '.')
         );
     }
 

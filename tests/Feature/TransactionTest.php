@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -22,5 +23,14 @@ class TransactionTest extends TestCase
         $response = $this->post(route('transactions.destroy', $this->transaction));
 
         $this->assertDatabaseMissing('transactions', $this->transaction->toArray());
+    }
+
+    public function testUpdateCategoryViaApi(): void
+    {
+        $newCategory = Category::where('id', '!=', $this->transaction->category_id)->first();
+
+        $response = $this->post(route('api.transactions.update', $this->transaction), ['category' => $newCategory->id]);
+
+        $this->assertEquals($newCategory->id, $this->transaction->refresh()->category_id);
     }
 }
