@@ -6,7 +6,10 @@ use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
 use App\Models\Category;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class AccountController extends Controller
 {
@@ -38,10 +41,25 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
+        $options = [
+            'chart_title' => 'Test',
+            'chart_type' => 'bar',
+            'report_type' => 'group_by_relationship',
+            'model' => Transaction::class,
+            'relationship_name' => 'category',
+            'group_by_field' => 'description',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'value',
+            'where_raw' => 'account_id = ' . $account->id,
+            'chart_color' => '124,12,37',
+        ];
+        $chart = new LaravelChart($options);
+
         return view('accounts.show')->with(
             [
                 'account' => $account,
-                'categories' => Category::all()
+                'categories' => Category::all(),
+                'chart' => $chart
             ]
         );
     }

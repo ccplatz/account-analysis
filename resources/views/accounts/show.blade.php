@@ -14,6 +14,13 @@
         </div>
     </div>
 
+    <div class="card my-5">
+        <div class="card-header">Chart</div>
+        <div class="card-body">
+            {!! $chart->renderHtml() !!}
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-header">
             Transactions
@@ -54,7 +61,7 @@
                             </td>
                             <td width="15%">
                                 <x-select id="categorySelect-{{ $transaction->id }}" class="category__select form-select"
-                                    :options="$categories" :selected="$transaction->category">
+                                    :options="$categories" :selected="$transaction->category_id">
                                     <option value="">Set category</option>
                                 </x-select>
                                 <input type="hidden" name="transaction"
@@ -79,3 +86,8 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    {!! $chart->renderChartJsLibrary() !!}
+    {!! $chart->renderJs() !!}
+@endpush
