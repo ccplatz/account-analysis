@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
+use App\Models\Category;
 use Illuminate\Database\QueryException;
 
 class AccountController extends Controller
@@ -39,7 +40,8 @@ class AccountController extends Controller
     {
         return view('accounts.show')->with(
             [
-                'account' => $account
+                'account' => $account,
+                'categories' => Category::all()
             ]
         );
     }

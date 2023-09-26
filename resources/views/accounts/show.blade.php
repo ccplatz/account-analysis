@@ -53,9 +53,8 @@
                                 </span>
                             </td>
                             <td width="15%">
-                                @if ($transaction->category)
-                                    {{ $transaction->category->description }}
-                                @endif
+                                <x-select id="categorySelect-{{ $transaction->id }}" class="category__select form-select"
+                                    :options="$categories" :selected="$transaction->category" />
                             </td>
                             <td class="fs-5">
                                 <a href="{{ route('transactions.destroy', $transaction) }}"
