@@ -1,2 +1,1 @@
-import "./bootstrap";
-import "./accounts/show";
+import './bootstrap';

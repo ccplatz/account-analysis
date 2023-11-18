@@ -58,6 +58,8 @@
         </div>
     </div>
 
+
+
     <div class="card">
         <div class="card-header">
             Transactions
@@ -124,3 +126,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/accounts/show.js')
+@endpush
