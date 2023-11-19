@@ -49,6 +49,15 @@ class AccountTest extends TestCase
         $this->assertDatabaseMissing('accounts', $this->account->toArray());
     }
 
+    public function testTransactionsAreShown(): void
+    {
+        $this->seed();
+        $account = Account::first();
+
+        $response = $this->get(route('accounts.show', Account::first()));
+        $response->assertSee($account->transactions->sortBy('date')->first()->purpose);
+    }
+
     public function testFilterTransactions(): void
     {
         // Filter by month
