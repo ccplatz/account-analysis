@@ -23,13 +23,13 @@
                         class="nav-link {{ Route::is('home') ? 'active' : '' }}">Home</a>
                 </li>
                 <li class="nav-item"> <a href="{{ route('files.index') }}"
-                        class="nav-link {{ Route::is('files.index') ? 'active' : '' }}">Files</a>
+                        class="nav-link {{ Route::is('files.*') ? 'active' : '' }}">Files</a>
                 </li>
                 <li class="nav-item"> <a href="{{ route('accounts.index') }}"
-                        class="nav-link {{ Route::is('accounts.index') ? 'active' : '' }}">Accounts</a>
+                        class="nav-link {{ Route::is('accounts.*') ? 'active' : '' }}">Accounts</a>
                 </li>
                 <li class="nav-item"> <a href="{{ route('categories.index') }}"
-                        class="nav-link {{ Route::is('categories.index') ? 'active' : '' }}">Categories</a>
+                        class="nav-link {{ Route::is('categories.*') ? 'active' : '' }}">Categories</a>
                 </li>
             </ul>
         </header>
