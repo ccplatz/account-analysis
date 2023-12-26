@@ -58,7 +58,49 @@
         </div>
     </div>
 
+    <div class="card my-5">
+        <div class="card-header">
+            Statistics
+        </div>
 
+        <div class="card-body">
+
+            <div class="row mb-4">
+                <div class="col">
+                    <select class="form-select" id="monthSelect">
+                        @foreach (\Carbon\CarbonPeriod::create(
+            now()->firstOfYear(),
+            '1 month',
+            now()->firstOfYear()->addMonths(11),
+        ) as $date)
+                            <option value="{{ $date->format('n') }}" @selected($month == $date->format('n'))>
+                                {{ $date->format('F') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" id="yearSelect">
+                        @foreach (\Carbon\CarbonPeriod::create($firstYear, '1 year', now()->firstOfYear()) as $date)
+                            <option value="{{ $date->format('Y') }}" @selected(now()->year == $date->format('Y'))>
+                                {{ $date->format('Y') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" id="chartSelect">
+                        @foreach ($charts as $id => $chart)
+                            <option value="{{ $id }}" @selected($id == $chartId)>{{ $chart }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div id="chartWrapper" class="w-100"></div>
+
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-header">
@@ -84,22 +126,22 @@
                 <tbody>
                     @foreach ($transactions as $transaction)
                         <tr>
-                            <td width="3%">{{ $transaction->id }}</td>
-                            <td width="10%">{{ $transaction->toArray()['date'] }}</a></td>
-                            <td width="15%">{{ $transaction->name_other_party }}</td>
-                            <td width="10%">{{ $transaction->payment_type }}</td>
-                            <td>{{ $transaction->purpose }}</td>
-                            <td width="10%">
+                            <td>{{ $transaction->id }}</td>
+                            <td>{{ $transaction->toArray()['date'] }}</a></td>
+                            <td style="width: 10%">{{ $transaction->name_other_party }}</td>
+                            <td>{{ $transaction->payment_type }}</td>
+                            <td style="width: 20%">{{ $transaction->purpose }}</td>
+                            <td>
                                 <span class="text-{{ $transaction->value < 0 ? 'danger' : 'success' }}">
                                     {{ $transaction->valueGerman }} €
                                 </span>
                             </td>
-                            <td width="10%">
+                            <td>
                                 <span class="text-{{ $transaction->balance_after < 0 ? 'danger' : 'success' }}">
                                     {{ $transaction->balance_afterGerman }} €
                                 </span>
                             </td>
-                            <td width="15%">
+                            <td>
                                 <x-select id="categorySelect-{{ $transaction->id }}" class="category__select form-select"
                                     :options="$categories" :selected="$transaction->category">
                                     <option value="">Set category</option>
@@ -110,11 +152,11 @@
                             <td class="fs-5">
                                 <a href="{{ route('transactions.destroy', $transaction) }}"
                                     onclick="event.preventDefault();
-                                document.getElementById('delete-form-{{ $transaction->id }}').submit();"><i
-                                        class="bi bi-trash3"></i></a>
-                                <form id="delete-form-{{ $transaction->id }}"
-                                    action="{{ route('transactions.destroy', $transaction) }}" method="POST"
-                                    style="display: none;">
+                                    document.getElementById('delete-form-{{ $transaction->id }}').submit();">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                                <form id="delete-form-{{ $transaction->id }}" class="d-none"
+                                    action="{{ route('transactions.destroy', $transaction) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                 </form>

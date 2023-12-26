@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartDataApiController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/transactions/{transaction}/update', [TransactionController::class, 'update'])->name('api.transactions.update');
+
+Route::post('/chart/category-by-month', [ChartDataApiController::class, 'categoryByMonth'])->name('api.chart.category-by-month');
