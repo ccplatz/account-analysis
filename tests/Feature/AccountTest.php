@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Account;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -45,5 +47,36 @@ class AccountTest extends TestCase
         $response = $this->delete(route('accounts.destroy', $this->account));
 
         $this->assertDatabaseMissing('accounts', $this->account->toArray());
+    }
+
+    public function testFilterTransactions(): void
+    {
+        $transactionToHide = Transaction::factory()->create(
+            [
+                'date' => now()->subMonth()->format('Y-m-d'),
+                'account_id' => $this->account->id,
+            ]
+        );
+        $transactionToShow = Transaction::factory()->create(
+            [
+                'date' => now(),
+                'account_id' => $this->account->id,
+            ]
+        );
+
+        $response = $this->get(route('accounts.show', $this->account));
+        $response->assertSee('Select data');
+        // see at least current year
+        $response->assertSee(now()->format('Y'));
+        // see at least current month
+        $response->assertSee(now()->format('n'));
+        $response->assertSee($transactionToShow->purpose);
+        $response->assertDontSee($transactionToHide->purpose);
+    }
+
+    public function testAddNewMonth(): void
+    {
+        $response = $this->get(route('accounts.show', $this->account));
+        $response->assertSee('New month');
     }
 }

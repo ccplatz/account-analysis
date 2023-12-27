@@ -8,9 +8,44 @@
         </div>
 
         <div class="card-body">
-            <b>Account:</b> {{ $account->description }}<br>
-            <b>IBAN:</b> {{ $account->iban }}<br>
-            <b>Bank:</b> {{ $account->bank }}<br>
+            <p>
+                <b>Account:</b> {{ $account->description }}<br>
+                <b>IBAN:</b> {{ $account->iban }}<br>
+                <b>Bank:</b> {{ $account->bank }}<br>
+            </p>
+            <a href="" class="btn btn-primary">{{ __('New month') }}</a>
+        </div>
+    </div>
+
+    <div class="card my-5">
+        <div class="card-header">
+            Select data
+        </div>
+        <div class="card-body">
+            <form action="{{ route('accounts.show', $account) }}" method="GET">
+                @csrf
+                <div class="row mb-4">
+                    <div class="col">
+                        <select class="form-select" id="monthSelect" name="month">
+                            @foreach ($periodForMonthDropdown as $date)
+                                <option value="{{ $date->format('n') }}" @selected($month == $date->format('n'))>
+                                    {{ $date->format('F') }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="yearSelect" name="year">
+                            @foreach ($periodForYearDropdown as $date)
+                                <option value="{{ $date->format('Y') }}" @selected(now()->year == $date->format('Y'))>
+                                    {{ $date->format('Y') }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-1"><button class="btn btn-primary w-100" type="submit">Filter</a></div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -20,6 +55,7 @@
         </div>
 
         <div class="card-body">
+            {{ $transactions->links() }}
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -35,7 +71,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($account->transactions as $transaction)
+                    @foreach ($transactions as $transaction)
                         <tr>
                             <td width="3%">{{ $transaction->id }}</td>
                             <td width="10%">{{ $transaction->toArray()['date'] }}</a></td>
