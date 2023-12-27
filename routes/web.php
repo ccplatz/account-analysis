@@ -36,7 +36,9 @@ Route::get('/files/{file}/delete', [FilesController::class, 'destroy'])->name('f
 /**
  * Account routes
  */
-Route::resource('/accounts', AccountController::class); // TODO: Set except routes
+Route::resource('/accounts', AccountController::class)->except(
+    ['edit', 'update']
+);
 
 /**
  * Import csv routes
