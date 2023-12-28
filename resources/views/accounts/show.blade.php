@@ -65,38 +65,6 @@
 
         <div class="card-body">
 
-            <div class="row mb-4">
-                <div class="col">
-                    <select class="form-select" id="monthSelect">
-                        @foreach (\Carbon\CarbonPeriod::create(
-            now()->firstOfYear(),
-            '1 month',
-            now()->firstOfYear()->addMonths(11),
-        ) as $date)
-                            <option value="{{ $date->format('n') }}" @selected($month == $date->format('n'))>
-                                {{ $date->format('F') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="yearSelect">
-                        @foreach (\Carbon\CarbonPeriod::create($firstYear, '1 year', now()->firstOfYear()) as $date)
-                            <option value="{{ $date->format('Y') }}" @selected(now()->year == $date->format('Y'))>
-                                {{ $date->format('Y') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="chartSelect">
-                        @foreach ($charts as $id => $chart)
-                            <option value="{{ $id }}" @selected($id == $chartId)>{{ $chart }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
             <div id="chartWrapper" class="w-100"></div>
 
         </div>

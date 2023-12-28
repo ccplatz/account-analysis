@@ -16,12 +16,6 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    private const CHARTS = [
-        'Total per category and month',
-        'Expenses per category',
-        'Balance history'
-    ];
-
     private GetTransactionsService $getTransactionsService;
     private AccountControllerService $accountControllerService;
 
@@ -80,8 +74,6 @@ class AccountController extends Controller
                 request()->query()
             );
 
-        $chartId = 0;
-
         return view('accounts.show')->with(
             [
                 'account' => $account,
@@ -92,8 +84,6 @@ class AccountController extends Controller
                 'year' => $year,
                 'periodForMonthDropdown' => $periodForMonthDropdown,
                 'periodForYearDropdown' => $periodForYearDropdown,
-                'charts' => self::CHARTS,
-                'chartId' => $chartId,
             ]
         );
     }

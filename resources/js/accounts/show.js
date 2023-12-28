@@ -36,12 +36,8 @@ filterSelect.addEventListener('change', function (event) {
 
 // Load data and build chart
 let chartData = [];
-const selectedMonth =
-    document.getElementById('monthSelect').selectedOptions[0].value;
-const selectedYear =
-    document.getElementById('yearSelect').selectedOptions[0].value;
-const selectedChart =
-    document.getElementById('chartSelect').selectedOptions[0].value;
+const selectedMonth = document.getElementById('monthSelect').value;
+const selectedYear = document.getElementById('yearSelect').value;
 const chartWrapper = document.getElementById('chartWrapper');
 
 let query = {
