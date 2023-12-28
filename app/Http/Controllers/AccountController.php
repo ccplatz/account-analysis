@@ -69,7 +69,7 @@ class AccountController extends Controller
             now()->firstOfYear()->addMonths(11));
 
         $transactionsPaginated = $this->getTransactionsService
-            ->getByMonth($account, $month, $year)
+            ->getTransactions($account, $filter, $month, $year)
             ->paginate(10)
             ->appends(
                 request()->query()

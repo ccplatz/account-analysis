@@ -51,6 +51,7 @@ class AccountTest extends TestCase
 
     public function testFilterTransactions(): void
     {
+        // Filter by month
         $transactionToHide = Transaction::factory()->create(
             [
                 'date' => now()->subMonth()->format('Y-m-d'),
@@ -71,6 +72,24 @@ class AccountTest extends TestCase
         $response->assertSee(now()->format('Y'));
         // see current month
         $response->assertSee(now()->format('n'));
+        $response->assertSee($transactionToShow->purpose);
+        $response->assertDontSee($transactionToHide->purpose);
+
+        // Filter by year
+        $transactionToHide = Transaction::factory()->create(
+            [
+                'date' => now()->subYear()->format('Y-m-d'),
+                'account_id' => $this->account->id,
+            ]
+        );
+        $transactionToShow = Transaction::factory()->create(
+            [
+                'date' => now(),
+                'account_id' => $this->account->id,
+            ]
+        );
+
+        $response = $this->get(route('accounts.show', ['account' => $this->account, 'filter' => 'year', 'year' => now()->year]));
         $response->assertSee($transactionToShow->purpose);
         $response->assertDontSee($transactionToHide->purpose);
     }

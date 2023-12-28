@@ -9,14 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class GetTransactionsService
 {
-    /**
-     * Get transaction of the account by month.
-     *
-     * @param  mixed $account
-     * @param  mixed $month
-     * @param  mixed $year
-     */
-    public function getByMonth(Account $account, int $month = null, int $year = null)
+    public function getTransactions(Account $account, string $filter, int $month = null, int $year = null)
     {
         if (!$month) {
             $month = Carbon::now()->month;
@@ -26,8 +19,36 @@ class GetTransactionsService
             $year = Carbon::now()->year;
         }
 
-        return Transaction::
-            where('account_id', $account->id)
+        if ($filter === 'month') {
+            return $this->getByMonth($account, $month, $year);
+        }
+
+        return $this->getByYear($account, $year);
+    }
+
+    /**
+     * Get transaction of the account by year.
+     *
+     * @param  mixed $account
+     * @param  mixed $month
+     * @param  mixed $year
+     */
+    private function getByYear(Account $account, int $year = null)
+    {
+        return Transaction::where('account_id', $account->id)
+            ->whereYear('date', $year);
+    }
+
+    /**
+     * Get transaction of the account by month.
+     *
+     * @param  mixed $account
+     * @param  mixed $month
+     * @param  mixed $year
+     */
+    private function getByMonth(Account $account, int $month = null, int $year = null)
+    {
+        return Transaction::where('account_id', $account->id)
             ->whereMonth('date', $month)
             ->whereYear('date', $year);
     }
