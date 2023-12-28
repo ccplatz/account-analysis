@@ -53,6 +53,7 @@ class AccountController extends Controller
      */
     public function show(Request $request, Account $account)
     {
+        $filter = $this->accountControllerService->getFilterFromRequest($request);
         $month = $this->accountControllerService->getMonthFromRequest($request);
         $year = $this->accountControllerService->getYearFromRequest($request);
         $firstDateWithTransaction = DB::table('transactions')
@@ -79,10 +80,11 @@ class AccountController extends Controller
                 'account' => $account,
                 'transactions' => $transactionsPaginated,
                 'categories' => Category::all(),
+                'filter' => $filter,
                 'month' => $month,
                 'year' => $year,
                 'periodForMonthDropdown' => $periodForMonthDropdown,
-                'periodForYearDropdown' => $periodForYearDropdown
+                'periodForYearDropdown' => $periodForYearDropdown,
             ]
         );
     }

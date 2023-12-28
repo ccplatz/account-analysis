@@ -66,9 +66,10 @@ class AccountTest extends TestCase
 
         $response = $this->get(route('accounts.show', $this->account));
         $response->assertSee('Select data');
-        // see at least current year
+        $response->assertSee('Month');
+        // see current year
         $response->assertSee(now()->format('Y'));
-        // see at least current month
+        // see current month
         $response->assertSee(now()->format('n'));
         $response->assertSee($transactionToShow->purpose);
         $response->assertDontSee($transactionToHide->purpose);

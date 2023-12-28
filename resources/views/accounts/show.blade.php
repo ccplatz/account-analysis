@@ -25,6 +25,16 @@
                 @csrf
                 <div class="row mb-4">
                     <div class="col">
+                        <select class="form-select" id="filterSelect" name="filter">
+                            <option value="month" @selected($filter == 'month')>
+                                Month
+                            </option>
+                            <option value="year" @selected($filter == 'year')>
+                                Year
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col">
                         <select class="form-select" id="monthSelect" name="month">
                             @foreach ($periodForMonthDropdown as $date)
                                 <option value="{{ $date->format('n') }}" @selected($month == $date->format('n'))>

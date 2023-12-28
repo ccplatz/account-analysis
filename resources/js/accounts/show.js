@@ -19,3 +19,15 @@ const selects = document.getElementsByClassName('category__select');
         }
     });
 });
+
+// Deactivate month select
+const monthSelect = document.getElementById('monthSelect');
+const filterSelect = document.getElementById('filterSelect');
+
+if (filterSelect.value === 'year') {
+    monthSelect.disabled = true;
+}
+
+filterSelect.addEventListener('change', function (event) {
+    monthSelect.disabled = !monthSelect.disabled;
+});
