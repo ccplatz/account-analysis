@@ -13,7 +13,6 @@
                 <b>IBAN:</b> {{ $account->iban }}<br>
                 <b>Bank:</b> {{ $account->bank }}<br>
             </p>
-            <a href="" class="btn btn-primary">{{ __('New month') }}</a>
         </div>
     </div>
 

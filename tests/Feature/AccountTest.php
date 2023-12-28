@@ -73,10 +73,4 @@ class AccountTest extends TestCase
         $response->assertSee($transactionToShow->purpose);
         $response->assertDontSee($transactionToHide->purpose);
     }
-
-    public function testAddNewMonth(): void
-    {
-        $response = $this->get(route('accounts.show', $this->account));
-        $response->assertSee('New month');
-    }
 }
