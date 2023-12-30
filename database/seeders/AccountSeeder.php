@@ -14,8 +14,8 @@ class AccountSeeder extends Seeder
     public function run(): void
     {
         Account::factory()
-            ->count(3)
-            ->hasTransactions(10)
+            ->count(1)
+            ->hasTransactions(100)
             ->create();
     }
 }

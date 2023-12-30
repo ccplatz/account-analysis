@@ -19,7 +19,7 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => fake()->date(),
+            'date' => fake()->dateTimeBetween('-2 years', now()),
             'name_other_party' => fake()->name(),
             'iban_other_party' => fake()->iban(),
             'payment_type' => Arr::random(['Credit Card', 'Debit Card', 'Manual Booking']),
