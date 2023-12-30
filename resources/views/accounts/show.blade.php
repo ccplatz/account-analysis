@@ -46,7 +46,7 @@
                     <div class="col">
                         <select class="form-select" id="yearSelect" name="year">
                             @foreach ($periodForYearDropdown as $date)
-                                <option value="{{ $date->format('Y') }}" @selected(now()->year == $date->format('Y'))>
+                                <option value="{{ $date->format('Y') }}" @selected($year == $date->format('Y'))>
                                     {{ $date->format('Y') }}
                                 </option>
                             @endforeach
