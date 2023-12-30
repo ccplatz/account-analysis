@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,13 +12,7 @@ use Tests\TestCase;
 
 class AccountTest extends TestCase
 {
-    private Account $account;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->account = Account::factory()->create();
-    }
+    use RefreshDatabase;
 
     public function testAccountsIsMenuItem(): void
     {
@@ -37,44 +32,57 @@ class AccountTest extends TestCase
 
     public function testAccountIsShown(): void
     {
+        $account = Account::factory()->create();
+
         $response = $this->get(route('accounts.index'));
 
-        $response->assertSee($this->account->description);
+        $response->assertSee($account->description);
     }
 
     public function testAccountCanBeDeleted(): void
     {
-        $response = $this->delete(route('accounts.destroy', $this->account));
+        $account = Account::factory()->create();
 
-        $this->assertDatabaseMissing('accounts', $this->account->toArray());
+        $response = $this->delete(route('accounts.destroy', $account));
+
+        $this->assertDatabaseMissing('accounts', $account->toArray());
     }
 
     public function testTransactionsAreShown(): void
     {
-        $this->seed();
-        $account = Account::first();
+        $account = Account::factory()->create();
+        $category = Category::factory()->create();
+        $transaction = Transaction::factory()->create(
+            [
+                'date' => Carbon::now(),
+                'account_id' => $account->id,
+            ]
+        );
 
         $response = $this->get(route('accounts.show', Account::first()));
-        $response->assertSee($account->transactions->sortBy('date')->first()->purpose);
+        $response->assertSee($transaction->purpose);
     }
 
     public function testFilterTransactions(): void
     {
+        $account = Account::factory()->create();
+        $category = Category::factory()->create();
+
         // Filter by month
         $transactionToHide = Transaction::factory()->create(
             [
                 'date' => now()->subMonth()->format('Y-m-d'),
-                'account_id' => $this->account->id,
+                'account_id' => $account->id,
             ]
         );
         $transactionToShow = Transaction::factory()->create(
             [
                 'date' => now(),
-                'account_id' => $this->account->id,
+                'account_id' => $account->id,
             ]
         );
 
-        $response = $this->get(route('accounts.show', $this->account));
+        $response = $this->get(route('accounts.show', $account));
         $response->assertSee('Select data');
         $response->assertSee('Month');
         // see current year
@@ -88,17 +96,17 @@ class AccountTest extends TestCase
         $transactionToHide = Transaction::factory()->create(
             [
                 'date' => now()->subYear()->format('Y-m-d'),
-                'account_id' => $this->account->id,
+                'account_id' => $account->id,
             ]
         );
         $transactionToShow = Transaction::factory()->create(
             [
                 'date' => now(),
-                'account_id' => $this->account->id,
+                'account_id' => $account->id,
             ]
         );
 
-        $response = $this->get(route('accounts.show', ['account' => $this->account, 'filter' => 'year', 'year' => now()->year]));
+        $response = $this->get(route('accounts.show', ['account' => $account, 'filter' => 'year', 'year' => now()->year]));
         $response->assertSee($transactionToShow->purpose);
         $response->assertDontSee($transactionToHide->purpose);
     }

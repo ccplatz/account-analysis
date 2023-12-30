@@ -11,17 +11,12 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
-    private File $file;
-
-    public function setup(): void
-    {
-        parent::setup();
-        $this->file = File::factory()->create();
-    }
+    use RefreshDatabase;
 
     public function testThatImportedFilesDoNotGetALinkToImport(): void
     {
-        $this->file->setToImported();
+        $file = File::factory()->create();
+        $file->setToImported();
         $response = $this->get(route('files.index'));
 
         $response->assertSee('bi-database-check');
@@ -29,6 +24,8 @@ class FileTest extends TestCase
 
     public function testThatNotImportedFilesGetALinkToImport(): void
     {
+        $file = File::factory()->create();
+
         $response = $this->get(route('files.index'));
 
         $response->assertSee('bi-database-add');

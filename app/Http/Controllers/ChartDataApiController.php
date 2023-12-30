@@ -4,20 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetTransactionsApiRequest;
 use App\Models\Transaction;
+use App\Services\ChartDataApiControllerService;
 use DB;
 
 class ChartDataApiController extends Controller
 {
+    private ChartDataApiControllerService $service;
+
+    public function __construct(ChartDataApiControllerService $service)
+    {
+        $this->service = $service;
+    }
+
+    /**
+     * Get chart data for category by month.
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function categoryByMonth(GetTransactionsApiRequest $request)
     {
-        $data = DB::table('transactions')
-            ->join('categories', 'categories.id', '=', 'transactions.category_id')
-            ->whereMonth('transactions.date', $request->input('month'))
-            ->whereYear('transactions.date', $request->input('year'))
-            ->select('categories.description as category', DB::raw('sum(transactions.value) as value'))
-            ->groupBy('category')
-            ->get();
+        $year = $request->input('year');
+        $month = $request->input('month');
 
-        return $data->toJson();
+        $monthlyValues = $this->service->getCategoryByMonth($year, $month);
+        $yearlyValues = $this->service->getCategoryAverageByYear($year);
+        $categories = $this->service->getUniqueCategories($monthlyValues, $yearlyValues);
+        $data = collect([$categories, $monthlyValues, $yearlyValues])->toJson();
+
+        return response($data);
     }
 }
