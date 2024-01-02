@@ -4,8 +4,8 @@ import Chart from 'chart.js/auto';
 
 // Load data and build chart
 let chartData = [];
-const selectedMonth = document.getElementById('monthSelect').value;
-const selectedYear = document.getElementById('yearSelect').value;
+const selectedMonth = +document.getElementById('monthSelect').value;
+const selectedYear = +document.getElementById('yearSelect').value;
 const chartWrapper = document.getElementById('chartWrapper');
 const chartsConfigArr = [];
 const chartsConfigSwitchesArr = Array.from(
@@ -56,6 +56,9 @@ const getDatasetsFromChartdata = function (chartData) {
             return rowWithCategory ? rowWithCategory.value : 0;
         });
     };
+    const chartCatsByPrevMonthIsRequired = function () {
+        return chartsConfigArr.includes('categoriesByPrevMonth');
+    };
     const chartCatsByYearIsRequired = function () {
         return chartsConfigArr.includes('categoriesByYear');
     };
@@ -65,6 +68,7 @@ const getDatasetsFromChartdata = function (chartData) {
     const chartCatsByMonthPrevYearIsReq = function () {
         return chartsConfigArr.includes('categoriesByMonthPrevYear');
     };
+    console.log(chartData.categoriesByPrevMonth);
 
     const datasets = [
         {
@@ -77,6 +81,16 @@ const getDatasetsFromChartdata = function (chartData) {
             ),
         },
     ];
+
+    if (chartCatsByPrevMonthIsRequired()) {
+        let prevMonth = +selectedMonth === 1 ? 12 : selectedMonth - 1;
+        prevMonth = prevMonth < 10 ? '0' + prevMonth : prevMonth;
+        const preMonthYear = prevMonth === 12 ? selectedYear - 1 : selectedYear;
+        datasets.push({
+            label: `Transactions ${prevMonth}/${preMonthYear} per category`,
+            data: getValuesForLabels(chartData.categoriesByPrevMonth, labels),
+        });
+    }
 
     if (chartCatsByYearIsRequired()) {
         datasets.push({

@@ -53,6 +53,27 @@
                         </label>
                     </div>
                     <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox" value="categoriesByPrevMonth"
+                            id="categoriesByPrevMonthCheck">
+                        <label class="form-check-label" for="categoriesByPrevMonthCheck">
+                            {{ __('Categories by previous month') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox"
+                            value="categoriesAvgByLast3Month" id="categoriesAvgByLast3MonthCheck">
+                        <label class="form-check-label" for="categoriesAvgByLast3MonthCheck">
+                            {{ __('Categories average by last 3 month') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox"
+                            value="categoriesByMonthPrevYear" id="categoriesByMonthPrevYearCheck">
+                        <label class="form-check-label" for="categoriesByMonthPrevYearCheck">
+                            {{ __('Categories by month of previous year') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
                         <input class="form-check-input charts-config-switch" type="checkbox" value="categoriesByYear"
                             id="yearCheck">
                         <label class="form-check-label" for="yearCheck">
@@ -63,14 +84,7 @@
                         <input class="form-check-input charts-config-switch" type="checkbox" value="categoriesByTotalTime"
                             id="totalTimeCheck">
                         <label class="form-check-label" for="totalTimeCheck">
-                            {{ __('Categories average by total time') }}
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input charts-config-switch" type="checkbox"
-                            value="categoriesByMonthPrevYear" id="categoriesByMonthPrevYearCheck">
-                        <label class="form-check-label" for="categoriesByMonthPrevYearCheck">
-                            {{ __('Categories by month of previous year') }}
+                            {{ __('Categories average') }}
                         </label>
                     </div>
                 </div>

@@ -73,6 +73,17 @@ class ChartDataApiControllerService
     }
 
     /**
+     * Return if categories by previous month dataset is required for the request.
+     *
+     * @param  mixed $chartsConfig
+     * @return bool
+     */
+    public function catsByPrevMonthIsRequired($chartsConfig): bool
+    {
+        return in_array('categoriesByPrevMonth', $chartsConfig);
+    }
+
+    /**
      * Return if categories by year dataset is required for the request.
      *
      * @param  mixed $chartsConfig
@@ -103,5 +114,17 @@ class ChartDataApiControllerService
     public function catsByMonthPrevYearIsRequired($chartsConfig): bool
     {
         return in_array('categoriesByMonthPrevYear', $chartsConfig);
+    }
+
+    /**
+     * Get the previous month and year.
+     *
+     * @param  mixed $month
+     * @param  mixed $year
+     * @return array
+     */
+    public function getPrevMonthAndYear(int $year, int $month): array
+    {
+        return $month > 1 ? ['month' => $month - 1, 'year' => $year] : ['month' => 12, 'year' => $year - 1];
     }
 }
