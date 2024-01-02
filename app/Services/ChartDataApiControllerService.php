@@ -15,7 +15,7 @@ class ChartDataApiControllerService
      * @param  mixed $month
      * @return 
      */
-    public function getCategoriesByMonth(int $year, int $month)
+    public function getCatsByMonth(int $year, int $month)
     {
         $monthlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereMonth('transactions.date', $month)
@@ -33,7 +33,7 @@ class ChartDataApiControllerService
      * @param  mixed $year
      * @return 
      */
-    public function getCategoriesAverageByYear(int $year)
+    public function getCatsAverageByYear(int $year)
     {
         $yearlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereYear('transactions.date', $year)
@@ -51,7 +51,7 @@ class ChartDataApiControllerService
      * @param  mixed $data2
      * @return array
      */
-    public function getUniqueCategories(Collection ...$collections): array
+    public function getUniqueCats(Collection ...$collections): array
     {
         $categories = collect();
 
@@ -60,5 +60,16 @@ class ChartDataApiControllerService
         }
 
         return $categories->unique()->flatten()->all();
+    }
+
+    /**
+     * Return if categories by year dataset is required for the request.
+     *
+     * @param  mixed $chartsConfig
+     * @return bool
+     */
+    public function catsByYearIsRequired($chartsConfig): bool
+    {
+        return in_array('categoriesByYear', $chartsConfig);
     }
 }

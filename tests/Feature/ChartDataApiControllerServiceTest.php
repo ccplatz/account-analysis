@@ -78,7 +78,7 @@ class ChartDataApiControllerServiceTest extends TestCase
             ]
         );
 
-        $this->assertEquals($expected->toArray(), $service->getCategoriesAverageByYear(2022)->toArray());
+        $this->assertEquals($expected->toArray(), $service->getCatsAverageByYear(2022)->toArray());
     }
 
     public function testGetCategoryValuesByMonth(): void
@@ -137,6 +137,6 @@ class ChartDataApiControllerServiceTest extends TestCase
             ]
         );
 
-        $this->assertEquals($expected->toArray(), $service->getCategoriesByMonth(2022, 1)->toArray());
+        $this->assertEquals($expected->toArray(), $service->getCatsByMonth(2022, 1)->toArray());
     }
 }
