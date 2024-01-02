@@ -91,6 +91,17 @@ class ChartDataApiControllerService
      */
     public function catsByTotalTimeIsRequired($chartsConfig): bool
     {
-        return in_array('categoriesByTotlaTime', $chartsConfig);
+        return in_array('categoriesByTotalTime', $chartsConfig);
+    }
+
+    /**
+     * Return if categories by month of previous year dataset is required for the request.
+     *
+     * @param  mixed $chartsConfig
+     * @return bool
+     */
+    public function catsByMonthPrevYearIsRequired($chartsConfig): bool
+    {
+        return in_array('categoriesByMonthPrevYear', $chartsConfig);
     }
 }

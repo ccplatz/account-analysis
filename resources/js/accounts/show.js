@@ -62,6 +62,9 @@ const getDatasetsFromChartdata = function (chartData) {
     const chartCatsByTotalTimeIsRequired = function () {
         return chartsConfigArr.includes('categoriesByTotalTime');
     };
+    const chartCatsByMonthPrevYearIsReq = function () {
+        return chartsConfigArr.includes('categoriesByMonthPrevYear');
+    };
 
     const datasets = [
         {
@@ -84,8 +87,20 @@ const getDatasetsFromChartdata = function (chartData) {
 
     if (chartCatsByTotalTimeIsRequired()) {
         datasets.push({
-            label: `Average ${selectedYear} per category`,
-            data: getValuesForLabels(chartData.categoriesByYear, labels),
+            label: `Average per category`,
+            data: getValuesForLabels(chartData.categoriesByTotalTime, labels),
+        });
+    }
+
+    if (chartCatsByMonthPrevYearIsReq()) {
+        datasets.push({
+            label: `Transactions ${
+                selectedMonth < 10 ? '0' + selectedMonth : selectedMonth
+            }/${selectedYear - 1} per category`,
+            data: getValuesForLabels(
+                chartData.categoriesByMonthPrevYear,
+                labels
+            ),
         });
     }
 

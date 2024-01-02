@@ -68,9 +68,9 @@
                     </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input charts-config-switch" type="checkbox"
-                            value="categoriesBySameMonthYearBefore" id="sameMonthYearBeforeCheck">
-                        <label class="form-check-label" for="sameMonthYearBeforeCheck">
-                            {{ __('Categories by same month one year before') }}
+                            value="categoriesByMonthPrevYear" id="categoriesByMonthPrevYearCheck">
+                        <label class="form-check-label" for="categoriesByMonthPrevYearCheck">
+                            {{ __('Categories by month of previous year') }}
                         </label>
                     </div>
                 </div>

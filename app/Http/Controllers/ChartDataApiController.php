@@ -31,13 +31,15 @@ class ChartDataApiController extends Controller
         $data = ['categoriesByMonthAndYear' => $categoriesByMonthAndYear];
 
         if ($this->service->catsByYearIsRequired($chartsConfig)) {
-            $yearlyValues = $this->service->getCatsAverageByYear($year);
-            $data['categoriesByYear'] = $yearlyValues;
+            $data['categoriesByYear'] = $this->service->getCatsAverageByYear($year);
         }
 
         if ($this->service->catsByTotalTimeIsRequired($chartsConfig)) {
-            $yearlyValues = $this->service->getCatsAverageByTotalTime();
-            $data['categoriesByTotalTime'] = $yearlyValues;
+            $data['categoriesByTotalTime'] = $this->service->getCatsAverageByTotalTime();
+        }
+
+        if ($this->service->catsByMonthPrevYearIsRequired($chartsConfig)) {
+            $data['categoriesByMonthPrevYear'] = $this->service->getCatsByMonth($year - 1, $month);
         }
 
         $categories = $this->service->getUniqueCats(...$data);
