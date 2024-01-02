@@ -68,7 +68,6 @@ const getDatasetsFromChartdata = function (chartData) {
     const chartCatsByMonthPrevYearIsReq = function () {
         return chartsConfigArr.includes('categoriesByMonthPrevYear');
     };
-    console.log(chartData.categoriesByPrevMonth);
 
     const datasets = [
         {
