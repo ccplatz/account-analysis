@@ -15,7 +15,7 @@ class ChartDataApiControllerService
      * @param  mixed $month
      * @return 
      */
-    public function getCategoryByMonth(int $year, int $month)
+    public function getCategoriesByMonth(int $year, int $month)
     {
         $monthlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereMonth('transactions.date', $month)
@@ -33,7 +33,7 @@ class ChartDataApiControllerService
      * @param  mixed $year
      * @return 
      */
-    public function getCategoryAverageByYear(int $year)
+    public function getCategoriesAverageByYear(int $year)
     {
         $yearlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereYear('transactions.date', $year)

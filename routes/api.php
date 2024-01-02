@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/transactions/{transaction}/update', [TransactionController::class, 'update'])->name('api.transactions.update');
 
-Route::post('/chart/category-by-month', [ChartDataApiController::class, 'categoryByMonth'])->name('api.chart.category-by-month');
+Route::post('/chart/transactions-by-category', [ChartDataApiController::class, 'transactionsByCategory'])->name('api.chart.transactions-by-category');

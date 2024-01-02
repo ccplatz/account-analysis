@@ -18,43 +18,63 @@
 
     <div class="card my-5">
         <div class="card-header">
-            Select data
+            {{ __('Options') }}
         </div>
         <div class="card-body">
-            <form action="{{ route('accounts.show', $account) }}" method="GET">
-                @csrf
-                <div class="row mb-4">
-                    <div class="col">
-                        <select class="form-select" id="filterSelect" name="filter">
-                            <option value="month" @selected($filter == 'month')>
-                                Month
-                            </option>
-                            <option value="year" @selected($filter == 'year')>
-                                Year
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="monthSelect" name="month">
+            <div class="row mb-4">
+                <div class="col">
+                    <form action="{{ route('accounts.show', $account) }}" method="GET">
+                        @csrf
+                        <p>{{ __('Select transaction data') }}:</p>
+                        <select class="form-select w-50 mb-3" id="monthSelect" name="month">
                             @foreach ($periodForMonthDropdown as $date)
                                 <option value="{{ $date->format('n') }}" @selected($month == $date->format('n'))>
                                     {{ $date->format('F') }}
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="yearSelect" name="year">
+                        <select class="form-select w-50 mb-3" id="yearSelect" name="year">
                             @foreach ($periodForYearDropdown as $date)
                                 <option value="{{ $date->format('Y') }}" @selected($year == $date->format('Y'))>
                                     {{ $date->format('Y') }}
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-1"><button class="btn btn-primary w-100" type="submit">Filter</a></div>
+                        <button class="btn btn-primary w-25" type="submit">{{ __('Select') }}</button>
+                    </form>
                 </div>
-            </form>
+                <div class="col">
+                    <p>{{ __('Select charts') }}:</p>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" onclick="return false;" type="checkbox"
+                            value="categoriesByMonthAndYear" id="monthAndAndYearCheck" checked>
+                        <label class="form-check-label" for="monthAndAndYearCheck">
+                            {{ __('Categories by month and year') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox" value="categoriesByYear"
+                            id="yearCheck">
+                        <label class="form-check-label" for="yearCheck">
+                            {{ __('Categories average by year') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox" value="categoriesByTotalTime"
+                            id="totalTimeCheck">
+                        <label class="form-check-label" for="totalTimeCheck">
+                            {{ __('Categories average by total time') }}
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input charts-config-switch" type="checkbox"
+                            value="categoriesBySameMonthYearBefore" id="sameMonthYearBeforeCheck">
+                        <label class="form-check-label" for="sameMonthYearBeforeCheck">
+                            {{ __('Categories by same month one year before') }}
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

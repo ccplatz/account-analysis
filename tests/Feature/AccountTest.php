@@ -83,7 +83,7 @@ class AccountTest extends TestCase
         );
 
         $response = $this->get(route('accounts.show', $account));
-        $response->assertSee('Select data');
+        $response->assertSee('Options');
         $response->assertSee('Month');
         // see current year
         $response->assertSee(now()->format('Y'));

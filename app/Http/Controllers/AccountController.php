@@ -52,7 +52,6 @@ class AccountController extends Controller
      */
     public function show(Request $request, Account $account)
     {
-        $filter = $this->accountControllerService->getFilterFromRequest($request);
         $month = $this->accountControllerService->getMonthFromRequest($request);
         $year = $this->accountControllerService->getYearFromRequest($request);
         $firstDateWithTransaction = DB::table('transactions')
@@ -61,14 +60,16 @@ class AccountController extends Controller
         $periodForYearDropdown = CarbonPeriod::create(
             Carbon::create($firstDateWithTransaction)->firstOfYear(),
             '1 year',
-            now()->firstOfYear());
+            now()->firstOfYear()
+        );
         $periodForMonthDropdown = CarbonPeriod::create(
             now()->firstOfYear(),
             '1 month',
-            now()->firstOfYear()->addMonths(11));
+            now()->firstOfYear()->addMonths(11)
+        );
 
         $transactionsPaginated = $this->getTransactionsService
-            ->getTransactions($account, $filter, $month, $year)
+            ->getTransactions($account, $month, $year)
             ->paginate(10)
             ->appends(
                 request()->query()
@@ -79,7 +80,6 @@ class AccountController extends Controller
                 'account' => $account,
                 'transactions' => $transactionsPaginated,
                 'categories' => Category::all(),
-                'filter' => $filter,
                 'month' => $month,
                 'year' => $year,
                 'periodForMonthDropdown' => $periodForMonthDropdown,

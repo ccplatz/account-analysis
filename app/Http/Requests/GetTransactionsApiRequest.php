@@ -24,6 +24,7 @@ class GetTransactionsApiRequest extends FormRequest
         return [
             "month" => "required",
             "year" => "required",
+            'chartsConfig' => 'required',
         ];
     }
 }

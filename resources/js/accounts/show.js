@@ -2,29 +2,41 @@
 
 import Chart from 'chart.js/auto';
 
-// Deactivate month select
-const monthSelect = document.getElementById('monthSelect');
-const filterSelect = document.getElementById('filterSelect');
-
-if (filterSelect.value === 'year') {
-    monthSelect.disabled = true;
-}
-
-filterSelect.addEventListener('change', function (event) {
-    monthSelect.disabled = !monthSelect.disabled;
-});
-
 // Load data and build chart
 let chartData = [];
 const selectedMonth = document.getElementById('monthSelect').value;
 const selectedYear = document.getElementById('yearSelect').value;
 const chartWrapper = document.getElementById('chartWrapper');
+const chartsConfigArr = [];
+const chartsConfigSwitchesArr = Array.from(
+    document.getElementsByClassName('charts-config-switch')
+);
 let chart;
 
 let query = {
     month: selectedMonth,
     year: selectedYear,
+    chartsConfig: chartsConfigArr,
 };
+
+const updateChartsConfig = function () {
+    // Empty the array
+    chartsConfigArr.splice(0);
+    chartsConfigSwitchesArr.forEach((elem) => {
+        if (elem.checked) {
+            chartsConfigArr.push(elem.value);
+        }
+    });
+};
+
+chartsConfigSwitchesArr.forEach((elem) =>
+    elem.addEventListener('change', function (event) {
+        // Reload chart if chart options are changed
+        updateChartsConfig();
+        chart.destroy();
+        loadChart();
+    })
+);
 
 const addMissingResultAlert = function () {
     const para = document.createElement('p');
@@ -33,47 +45,80 @@ const addMissingResultAlert = function () {
     chartWrapper.appendChild(para);
 };
 
+const getDatasetsFromChartdata = function (chartData) {
+    const labels = Object.values(chartData.categories);
+    const getValuesForLabels = function (chartDataPerCategory, labels) {
+        return labels.map((label) => {
+            const rowWithCategory = chartDataPerCategory.find(
+                (row) => row.category === label
+            );
+            return rowWithCategory ? rowWithCategory.value : 0;
+        });
+    };
+    const chartCatsByYearIsRequired = function () {
+        return chartsConfigArr.includes('categoriesByYear');
+    };
+
+    const datasets = [
+        {
+            label: `Transactions ${
+                selectedMonth < 10 ? '0' + selectedMonth : selectedMonth
+            }/${selectedYear} per category`,
+            data: getValuesForLabels(
+                chartData.categoriesByMonthAndYear,
+                labels
+            ),
+        },
+    ];
+
+    if (chartCatsByYearIsRequired()) {
+        datasets.push({
+            label: `Average ${selectedYear} per category`,
+            data: getValuesForLabels(chartData.categoriesByYear, labels),
+        });
+    }
+
+    return datasets;
+};
+
 const buildChart = function (chartData) {
+    const labels = Object.values(chartData.categories);
+    const datasets = getDatasetsFromChartdata(chartData);
     chart = new Chart(document.getElementById('chart'), {
         type: 'bar',
         data: {
-            labels: Object.values(chartData[0]),
-            datasets: [
-                {
-                    label: `Transactions ${selectedMonth}/${selectedYear} per category`,
-                    data: chartData[1].map((row) => row.value),
-                },
-                {
-                    label: `Average ${selectedYear} per category`,
-                    data: chartData[2].map((row) => row.value),
-                },
-            ],
+            labels: labels,
+            datasets: datasets,
         },
     });
 };
 
-const addChart = function (chartData) {
+const addChart = function () {
     const chart = document.createElement('canvas');
     chart.id = 'chart';
     chartWrapper.appendChild(chart);
-    buildChart(chartData);
 };
 
 const loadChart = function () {
     axios({
         method: 'post',
-        url: '/api/chart/category-by-month',
+        url: '/api/chart/transactions-by-category',
         data: query,
     })
         .then(function (response) {
             chartData = response.data;
 
-            if (chartData[0].length < 1 && chartData[1].length < 1) {
+            if (chartData.categoriesByMonthAndYear.length < 1) {
                 addMissingResultAlert();
                 return;
             }
 
-            addChart(chartData);
+            const chartElem = document.getElementById('chart');
+            if (!chartElem) {
+                addChart();
+            }
+
+            buildChart(chartData);
         })
         .catch(function (error) {
             console.log(error);
@@ -81,6 +126,7 @@ const loadChart = function () {
 };
 
 window.onload = function () {
+    updateChartsConfig();
     loadChart();
 };
 

@@ -17,20 +17,26 @@ class ChartDataApiController extends Controller
     }
 
     /**
-     * Get chart data for category by month.
+     * Get chart data like requested.
      *
      * @param  mixed $request
-     * @return void
      */
-    public function categoryByMonth(GetTransactionsApiRequest $request)
+    public function transactionsByCategory(GetTransactionsApiRequest $request)
     {
         $year = $request->input('year');
         $month = $request->input('month');
+        $chartsConfig = $request->input('chartsConfig');
 
-        $monthlyValues = $this->service->getCategoryByMonth($year, $month);
-        $yearlyValues = $this->service->getCategoryAverageByYear($year);
-        $categories = $this->service->getUniqueCategories($monthlyValues, $yearlyValues);
-        $data = collect([$categories, $monthlyValues, $yearlyValues])->toJson();
+        $monthlyValues = $this->service->getCategoriesByMonth($year, $month);
+        $data = ['categoriesByMonthAndYear' => $monthlyValues];
+
+        if (in_array('categoriesByYear', $chartsConfig)) {
+            $yearlyValues = $this->service->getCategoriesAverageByYear($year);
+            $data['categoriesByYear'] = $yearlyValues;
+        }
+
+        $categories = $this->service->getUniqueCategories(...$data);
+        $data['categories'] = $categories;
 
         return response($data);
     }
