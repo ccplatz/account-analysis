@@ -17,14 +17,12 @@ class ChartDataApiControllerService
      */
     public function getCatsByMonth(int $year, int $month)
     {
-        $monthlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
+        return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereMonth('transactions.date', $month)
             ->whereYear('transactions.date', $year)
             ->select('categories.description as category', DB::raw('sum(transactions.value) as value'))
             ->groupBy('category')
             ->get();
-
-        return $monthlyData;
     }
 
     /**
@@ -35,13 +33,25 @@ class ChartDataApiControllerService
      */
     public function getCatsAverageByYear(int $year)
     {
-        $yearlyData = Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
+        return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereYear('transactions.date', $year)
             ->selectRaw('categories.description AS category, SUM(transactions.value) / COUNT(DISTINCT MONTH(transactions.date)) AS value')
             ->groupBy('category')
             ->get();
+    }
 
-        return $yearlyData;
+    /**
+     * Get average values (every month with at least one transaction) for every category by total time.
+     *
+     * @param  mixed $year
+     * @return 
+     */
+    public function getCatsAverageByTotalTime()
+    {
+        return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
+            ->selectRaw('categories.description AS category, SUM(transactions.value) / COUNT(DISTINCT FORMAT(transactions.date, "yyyyMM")) AS value')
+            ->groupBy('category')
+            ->get();
     }
 
     /**
@@ -71,5 +81,16 @@ class ChartDataApiControllerService
     public function catsByYearIsRequired($chartsConfig): bool
     {
         return in_array('categoriesByYear', $chartsConfig);
+    }
+
+    /**
+     * Return if categories by total time dataset is required for the request.
+     *
+     * @param  mixed $chartsConfig
+     * @return bool
+     */
+    public function catsByTotalTimeIsRequired($chartsConfig): bool
+    {
+        return in_array('categoriesByTotlaTime', $chartsConfig);
     }
 }

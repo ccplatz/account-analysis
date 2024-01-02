@@ -35,6 +35,11 @@ class ChartDataApiController extends Controller
             $data['categoriesByYear'] = $yearlyValues;
         }
 
+        if ($this->service->catsByTotalTimeIsRequired($chartsConfig)) {
+            $yearlyValues = $this->service->getCatsAverageByTotalTime();
+            $data['categoriesByTotalTime'] = $yearlyValues;
+        }
+
         $categories = $this->service->getUniqueCats(...$data);
         $data['categories'] = $categories;
 

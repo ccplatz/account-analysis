@@ -22,6 +22,7 @@ let query = {
 const updateChartsConfig = function () {
     // Empty the array
     chartsConfigArr.splice(0);
+
     chartsConfigSwitchesArr.forEach((elem) => {
         if (elem.checked) {
             chartsConfigArr.push(elem.value);
@@ -58,6 +59,9 @@ const getDatasetsFromChartdata = function (chartData) {
     const chartCatsByYearIsRequired = function () {
         return chartsConfigArr.includes('categoriesByYear');
     };
+    const chartCatsByTotalTimeIsRequired = function () {
+        return chartsConfigArr.includes('categoriesByTotalTime');
+    };
 
     const datasets = [
         {
@@ -72,6 +76,13 @@ const getDatasetsFromChartdata = function (chartData) {
     ];
 
     if (chartCatsByYearIsRequired()) {
+        datasets.push({
+            label: `Average ${selectedYear} per category`,
+            data: getValuesForLabels(chartData.categoriesByYear, labels),
+        });
+    }
+
+    if (chartCatsByTotalTimeIsRequired()) {
         datasets.push({
             label: `Average ${selectedYear} per category`,
             data: getValuesForLabels(chartData.categoriesByYear, labels),
