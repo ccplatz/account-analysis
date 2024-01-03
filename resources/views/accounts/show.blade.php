@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card mb-5">
         <div class="card-header">
             Transactions
         </div>
