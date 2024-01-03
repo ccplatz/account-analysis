@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\OpenFileException;
+use App\Exceptions\WrongValueCountException;
 use App\Http\Requests\ChooseAccountRequest;
 use App\Http\Requests\MapFieldsRequest;
 use App\Http\Requests\StoreTransactionsRequest;
@@ -11,6 +12,7 @@ use App\Models\File;
 use App\Services\CsvService;
 use App\Services\GetFileContentService;
 use App\Services\ImportService;
+use Brick\Math\Exception\NumberFormatException;
 
 class ImportController extends Controller
 {
@@ -106,7 +108,15 @@ class ImportController extends Controller
 
         $lines = $this->getFileContentService->getLinesFromFile($file);
         $rawData = $this->csvService->getAssociativeArrayFromLines($lines);
-        $this->importService->storeTransactions($rawData, $account, $mappings);
+        try {
+            $this->importService->storeTransactions($rawData, $account, $mappings);
+        } catch (NumberFormatException $e) {
+            report($e);
+            return redirect()->back()->withErrors($e->getMessage());
+        } catch (WrongValueCountException $e) {
+            report($e);
+            return redirect()->back()->withErrors($e->getMessage());
+        }
         $file->setToImported();
 
         return redirect()->route('home');

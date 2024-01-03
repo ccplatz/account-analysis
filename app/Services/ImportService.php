@@ -100,7 +100,7 @@ class ImportService
         $formatedValue = Str::replace(".", "", $value);
         $formatedValue = Str::replace(",", ".", $formatedValue);
         if (!is_numeric($formatedValue)) {
-            throw new NumberFormatException('The given value is not a valid number.');
+            throw new NumberFormatException('The given value is not a valid number: ' . $value);
         }
         return floatval($formatedValue);
     }

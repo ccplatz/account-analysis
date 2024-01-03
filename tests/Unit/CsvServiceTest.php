@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Exceptions\WrongValueCoundException;
+use App\Exceptions\WrongValueCountException;
 use App\Services\CsvService;
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +49,7 @@ class CsvServiceTest extends TestCase
 
     public function test_throws_exception_for_wrong_count_of_fields(): void
     {
-        $this->expectException(WrongValueCoundException::class);
+        $this->expectException(WrongValueCountException::class);
         $lines = ['a;b;c', '1;2;3', 'x;y'];
 
         $result = $this->csvService->getAssociativeArrayFromLines($lines);

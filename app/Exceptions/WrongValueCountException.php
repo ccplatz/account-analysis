@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class WrongValueCoundException extends Exception
+class WrongValueCountException extends Exception
 {
     //
 }

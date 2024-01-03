@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\WrongValueCoundException;
+use App\Exceptions\WrongValueCountException;
 use Illuminate\Support\Str;
 
 
@@ -69,7 +69,7 @@ class CsvService
     private function mergeHeaderAndValues(array $header, array $values): array
     {
         if (count($values) !== count($header)) {
-            throw new WrongValueCoundException('The number of values is not correct.');
+            throw new WrongValueCountException('The number of values is not correct.');
         }
 
         return array_combine($header, $values);
