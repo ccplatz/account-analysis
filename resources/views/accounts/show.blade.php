@@ -63,7 +63,7 @@
                         <input class="form-check-input charts-config-switch" type="checkbox"
                             value="categoriesAvgByLast3Month" id="categoriesAvgByLast3MonthCheck">
                         <label class="form-check-label" for="categoriesAvgByLast3MonthCheck">
-                            {{ __('Categories average by last 3 month') }}
+                            {{ __('Categories average by last three month') }}
                         </label>
                     </div>
                     <div class="form-check form-switch">

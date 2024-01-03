@@ -36,6 +36,10 @@ class ChartDataApiController extends Controller
             $data['categoriesByPrevMonth'] = $this->service->getCatsByMonth($prevMonthYear, $prevMonth);
         }
 
+        if ($this->service->catsAvgByLast3MonthIsRequired($chartsConfig)) {
+            $data['categoriesAvgByLast3Month'] = $this->service->getCatsAvgByLast3Month($year, $month);
+        }
+
         if ($this->service->catsByYearIsRequired($chartsConfig)) {
             $data['categoriesByYear'] = $this->service->getCatsAverageByYear($year);
         }

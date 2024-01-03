@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Collection;
 
@@ -20,6 +21,26 @@ class ChartDataApiControllerService
         return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereMonth('transactions.date', $month)
             ->whereYear('transactions.date', $year)
+            ->select('categories.description as category', DB::raw('sum(transactions.value) as value'))
+            ->groupBy('category')
+            ->get();
+    }
+
+    /**
+     * Get values for every category by month.
+     *
+     * @param  mixed $year
+     * @param  mixed $month
+     * @return 
+     */
+    public function getCatsAvgByLast3Month(int $actualYear, int $actualMonth)
+    {
+        $targetDate = Carbon::create($actualYear, $actualMonth, 1);
+        $startDate = $targetDate->copy()->subMonths(3)->startOfMonth();
+        $endDate = $targetDate->copy()->subMonths(1)->endOfMonth();
+
+        return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
+            ->whereBetween('transactions.date', [$startDate, $endDate])
             ->select('categories.description as category', DB::raw('sum(transactions.value) as value'))
             ->groupBy('category')
             ->get();
@@ -114,6 +135,17 @@ class ChartDataApiControllerService
     public function catsByMonthPrevYearIsRequired($chartsConfig): bool
     {
         return in_array('categoriesByMonthPrevYear', $chartsConfig);
+    }
+
+    /**
+     * Return if categories by last three month dataset is required for the request.
+     *
+     * @param  mixed $chartsConfig
+     * @return bool
+     */
+    public function catsAvgByLast3MonthIsRequired($chartsConfig): bool
+    {
+        return in_array('categoriesAvgByLast3Month', $chartsConfig);
     }
 
     /**

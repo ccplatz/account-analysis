@@ -59,6 +59,9 @@ const getDatasetsFromChartdata = function (chartData) {
     const chartCatsByPrevMonthIsRequired = function () {
         return chartsConfigArr.includes('categoriesByPrevMonth');
     };
+    const chartCatsAvgByLast3MonthIsRequired = function () {
+        return chartsConfigArr.includes('categoriesAvgByLast3Month');
+    };
     const chartCatsByYearIsRequired = function () {
         return chartsConfigArr.includes('categoriesByYear');
     };
@@ -88,6 +91,16 @@ const getDatasetsFromChartdata = function (chartData) {
         datasets.push({
             label: `Transactions ${prevMonth}/${preMonthYear} per category`,
             data: getValuesForLabels(chartData.categoriesByPrevMonth, labels),
+        });
+    }
+
+    if (chartCatsAvgByLast3MonthIsRequired()) {
+        datasets.push({
+            label: `Average last three month per category`,
+            data: getValuesForLabels(
+                chartData.categoriesAvgByLast3Month,
+                labels
+            ),
         });
     }
 
