@@ -14,6 +14,67 @@ class ChartDataApiControllerServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testGetCategoryValuesByMonth(): void
+    {
+        $service = app(ChartDataApiControllerService::class);
+        $account = Account::factory()->create();
+        $category = Category::factory()->create();
+
+        $expected = collect(
+            [
+                [
+                    'category' => $category->description,
+                    'value' => 120.0,
+                ]
+            ]
+        );
+
+        $tJan1 = Transaction::factory()->create(
+            [
+                'date' => '2022-01-01',
+                'value' => 100.00,
+                'category_id' => $category->id,
+                'account_id' => $account->id,
+            ]
+        );
+        $tJan2 = Transaction::factory()->create(
+            [
+                'date' => '2022-01-01',
+                'value' => 40.00,
+                'category_id' => $category->id,
+                'account_id' => $account->id,
+            ]
+        );
+        $tJan3 = Transaction::factory()->create(
+            [
+                'date' => '2022-01-01',
+                'value' => -20.00,
+                'category_id' => $category->id,
+                'account_id' => $account->id,
+            ]
+        );
+        $tFeb1 = Transaction::factory()->create(
+            [
+                'date' => '2022-02-01',
+                'value' => 120.00,
+                'category_id' => $category->id,
+                'account_id' => $account->id,
+            ]
+        );
+        $tJan2021 = Transaction::factory()->create(
+            [
+                'date' => '2021-01-01',
+                'value' => 120.00,
+                'category_id' => $category->id,
+                'account_id' => $account->id,
+            ]
+        );
+
+        $result = $service->getChartData(['categoriesByMonthAndYear'], 2022, 1);
+
+        $this->assertEquals($expected->toArray(), $result['categoriesByMonthAndYear']->toArray());
+    }
+
     public function testGetCategoryAverageByYear(): void
     {
         $service = app(ChartDataApiControllerService::class);
@@ -78,66 +139,9 @@ class ChartDataApiControllerServiceTest extends TestCase
             ]
         );
 
-        $this->assertEquals($expected->toArray(), $service->getCatsAverageByYear(2022)->toArray());
-    }
+        $result = $service->getChartData(['categoriesByYear'], 2022, 1);
 
-    public function testGetCategoryValuesByMonth(): void
-    {
-        $service = app(ChartDataApiControllerService::class);
-        $account = Account::factory()->create();
-        $category = Category::factory()->create();
-
-        $expected = collect(
-            [
-                [
-                    'category' => $category->description,
-                    'value' => 120.0,
-                ]
-            ]
-        );
-
-        $tJan1 = Transaction::factory()->create(
-            [
-                'date' => '2022-01-01',
-                'value' => 100.00,
-                'category_id' => $category->id,
-                'account_id' => $account->id,
-            ]
-        );
-        $tJan2 = Transaction::factory()->create(
-            [
-                'date' => '2022-01-01',
-                'value' => 40.00,
-                'category_id' => $category->id,
-                'account_id' => $account->id,
-            ]
-        );
-        $tJan3 = Transaction::factory()->create(
-            [
-                'date' => '2022-01-01',
-                'value' => -20.00,
-                'category_id' => $category->id,
-                'account_id' => $account->id,
-            ]
-        );
-        $tFeb1 = Transaction::factory()->create(
-            [
-                'date' => '2022-02-01',
-                'value' => 120.00,
-                'category_id' => $category->id,
-                'account_id' => $account->id,
-            ]
-        );
-        $tJan2021 = Transaction::factory()->create(
-            [
-                'date' => '2021-01-01',
-                'value' => 120.00,
-                'category_id' => $category->id,
-                'account_id' => $account->id,
-            ]
-        );
-
-        $this->assertEquals($expected->toArray(), $service->getCatsByMonth(2022, 1)->toArray());
+        $this->assertEquals($expected->toArray(), $result['categoriesByYear']->toArray());
     }
 
     public function testGetCategoryValuesByTotalTime(): void
@@ -196,6 +200,8 @@ class ChartDataApiControllerServiceTest extends TestCase
             ]
         );
 
-        $this->assertEquals($expected->toArray(), $service->getCatsAverageByTotalTime()->toArray());
+        $result = $service->getChartData(['categoriesByTotalTime'], 2022, 1);
+
+        $this->assertEquals($expected->toArray(), $result['categoriesByTotalTime']->toArray());
     }
 }

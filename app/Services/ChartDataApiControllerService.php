@@ -10,13 +10,57 @@ use Illuminate\Support\Collection;
 class ChartDataApiControllerService
 {
     /**
+     * Get the chart data for the request.
+     *
+     * @param  array $chartsConfig
+     * @return array
+     */
+    public function getChartData(array $chartsConfig, int $year, int $month): array
+    {
+        $categoriesByMonthAndYear = $this->getCatsByMonth($year, $month);
+        $data = ['categoriesByMonthAndYear' => $categoriesByMonthAndYear];
+
+        $chartDescription = 'categoriesByPrevMonth';
+        if ($this->chartIsRequired($chartDescription, $chartsConfig)) {
+            $prevMonth = $this->getPrevMonthAndYear($year, $month)['month'];
+            $prevMonthYear = $this->getPrevMonthAndYear($year, $month)['year'];
+            $data[$chartDescription] = $this->getCatsByMonth($prevMonthYear, $prevMonth);
+        }
+
+        $chartDescription = 'categoriesAvgByLast3Month';
+        if ($this->chartIsRequired($chartDescription, $chartsConfig)) {
+            $data[$chartDescription] = $this->getCatsAvgByLast3Month($year, $month);
+        }
+
+        $chartDescription = 'categoriesByYear';
+        if ($this->chartIsRequired($chartDescription, $chartsConfig)) {
+            $data[$chartDescription] = $this->getCatsAverageByYear($year);
+        }
+
+        $chartDescription = 'categoriesByTotalTime';
+        if ($this->chartIsRequired($chartDescription, $chartsConfig)) {
+            $data[$chartDescription] = $this->getCatsAverageByTotalTime();
+        }
+
+        $chartDescription = 'categoriesByMonthPrevYear';
+        if ($this->chartIsRequired($chartDescription, $chartsConfig)) {
+            $data[$chartDescription] = $this->getCatsByMonth($year - 1, $month);
+        }
+
+        $categories = $this->getUniqueCats(...$data);
+        $data['categories'] = $categories;
+
+        return $data;
+    }
+
+    /**
      * Get values for every category by month.
      *
      * @param  mixed $year
      * @param  mixed $month
      * @return 
      */
-    public function getCatsByMonth(int $year, int $month)
+    private function getCatsByMonth(int $year, int $month)
     {
         return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereMonth('transactions.date', $month)
@@ -33,7 +77,7 @@ class ChartDataApiControllerService
      * @param  mixed $month
      * @return 
      */
-    public function getCatsAvgByLast3Month(int $actualYear, int $actualMonth)
+    private function getCatsAvgByLast3Month(int $actualYear, int $actualMonth)
     {
         $targetDate = Carbon::create($actualYear, $actualMonth, 1);
         $startDate = $targetDate->copy()->subMonths(3)->startOfMonth();
@@ -52,7 +96,7 @@ class ChartDataApiControllerService
      * @param  mixed $year
      * @return 
      */
-    public function getCatsAverageByYear(int $year)
+    private function getCatsAverageByYear(int $year)
     {
         return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->whereYear('transactions.date', $year)
@@ -67,7 +111,7 @@ class ChartDataApiControllerService
      * @param  mixed $year
      * @return 
      */
-    public function getCatsAverageByTotalTime()
+    private function getCatsAverageByTotalTime()
     {
         return Transaction::join('categories', 'categories.id', '=', 'transactions.category_id')
             ->selectRaw('categories.description AS category, SUM(transactions.value) / COUNT(DISTINCT FORMAT(transactions.date, "yyyyMM")) AS value')
@@ -82,7 +126,7 @@ class ChartDataApiControllerService
      * @param  mixed $data2
      * @return array
      */
-    public function getUniqueCats(Collection ...$collections): array
+    private function getUniqueCats(Collection ...$collections): array
     {
         $categories = collect();
 
@@ -99,53 +143,9 @@ class ChartDataApiControllerService
      * @param  mixed $chartsConfig
      * @return bool
      */
-    public function catsByPrevMonthIsRequired($chartsConfig): bool
+    private function chartIsRequired($chartDescription, $chartsConfig): bool
     {
-        return in_array('categoriesByPrevMonth', $chartsConfig);
-    }
-
-    /**
-     * Return if categories by year dataset is required for the request.
-     *
-     * @param  mixed $chartsConfig
-     * @return bool
-     */
-    public function catsByYearIsRequired($chartsConfig): bool
-    {
-        return in_array('categoriesByYear', $chartsConfig);
-    }
-
-    /**
-     * Return if categories by total time dataset is required for the request.
-     *
-     * @param  mixed $chartsConfig
-     * @return bool
-     */
-    public function catsByTotalTimeIsRequired($chartsConfig): bool
-    {
-        return in_array('categoriesByTotalTime', $chartsConfig);
-    }
-
-    /**
-     * Return if categories by month of previous year dataset is required for the request.
-     *
-     * @param  mixed $chartsConfig
-     * @return bool
-     */
-    public function catsByMonthPrevYearIsRequired($chartsConfig): bool
-    {
-        return in_array('categoriesByMonthPrevYear', $chartsConfig);
-    }
-
-    /**
-     * Return if categories by last three month dataset is required for the request.
-     *
-     * @param  mixed $chartsConfig
-     * @return bool
-     */
-    public function catsAvgByLast3MonthIsRequired($chartsConfig): bool
-    {
-        return in_array('categoriesAvgByLast3Month', $chartsConfig);
+        return in_array($chartDescription, $chartsConfig);
     }
 
     /**
@@ -155,7 +155,7 @@ class ChartDataApiControllerService
      * @param  mixed $year
      * @return array
      */
-    public function getPrevMonthAndYear(int $year, int $month): array
+    private function getPrevMonthAndYear(int $year, int $month): array
     {
         return $month > 1 ? ['month' => $month - 1, 'year' => $year] : ['month' => 12, 'year' => $year - 1];
     }
