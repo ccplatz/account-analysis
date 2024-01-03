@@ -119,6 +119,6 @@ class ImportController extends Controller
         }
         $file->setToImported();
 
-        return redirect()->route('home');
+        return redirect()->route('accounts.show', $account)->withSuccess('File imported.');
     }
 }
