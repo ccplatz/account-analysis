@@ -136,11 +136,45 @@ const getDatasetsFromChartdata = function (chartData) {
 const buildChart = function (chartData) {
     const labels = Object.values(chartData.categories);
     const datasets = getDatasetsFromChartdata(chartData);
+    Chart.defaults.font.size = 16;
     chart = new Chart(document.getElementById('chart'), {
         type: 'bar',
         data: {
             labels: labels,
             datasets: datasets,
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.dataset.label || '';
+                            const value = context.parsed.y;
+                            const euroValue =
+                                value
+                                    .toFixed(0)
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, '.') +
+                                ' €';
+                            return `${label}: ${euroValue}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        // Die Callback-Funktion, um die Werte in Euro zu formatieren
+                        callback: function (value, index, values) {
+                            return (
+                                value
+                                    .toFixed(0)
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, '.') +
+                                ' €'
+                            );
+                        },
+                    },
+                },
+            },
         },
     });
 };
