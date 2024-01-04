@@ -21,4 +21,12 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+     * Get the import-rules for the category.
+     */
+    public function importRules(): HasMany
+    {
+        return $this->hasMany(ImportRule::class);
+    }
 }

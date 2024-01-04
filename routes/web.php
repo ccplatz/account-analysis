@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ImportRuleController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +57,8 @@ Route::resource('/categories', CategoryController::class); // TODO: Set except r
  * Transactions routes
  */
 Route::resource('/transactions', TransactionController::class); // TODO: Set except routes
+
+/**
+ * ImportRule routes
+ */
+Route::resource('/import-rules', ImportRuleController::class);

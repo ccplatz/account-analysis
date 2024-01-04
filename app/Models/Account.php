@@ -23,4 +23,12 @@ class Account extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+     * Get the import rules for the account.
+     */
+    public function importRule(): HasMany
+    {
+        return $this->hasMany(ImportRule::class);
+    }
 }

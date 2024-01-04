@@ -31,6 +31,9 @@
                 <li class="nav-item"> <a href="{{ route('categories.index') }}"
                         class="nav-link {{ Route::is('categories.*') ? 'active' : '' }}">Categories</a>
                 </li>
+                <li class="nav-item"> <a href="{{ route('import-rules.index') }}"
+                        class="nav-link {{ Route::is('import-rules.*') ? 'active' : '' }}">Import rules</a>
+                </li>
             </ul>
         </header>
 
