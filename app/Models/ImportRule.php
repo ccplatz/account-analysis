@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,5 +47,15 @@ class ImportRule extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the user's first name.
+     */
+    protected function fieldNamePublic(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => self::FIELD_NAMES[$this->field_name],
+        );
     }
 }

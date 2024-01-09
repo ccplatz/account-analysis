@@ -72,7 +72,7 @@
                         <tr>
                             <td>{{ $rule->description }}</td>
                             <td>{{ $rule->account->description }}</td>
-                            <td>{{ $rule->field_name }}</td>
+                            <td>{{ $rule->field_name_public }}</td>
                             <td>{{ Str::limit($rule->pattern, 20, '...') }}</td>
                             <td>{{ $rule->exact_match }}</td>
                             <td>{{ $rule->category->description }}</td>
