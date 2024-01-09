@@ -32,6 +32,35 @@ class ImportRule extends Model
     ];
 
     /**
+     * Check if rule applies on a transaction.
+     *
+     * @param  mixed $transaction
+     * @return bool
+     */
+    public function applies(Transaction $transaction): bool
+    {
+        if ($transaction->account_id !== $this->account_id) {
+            return false;
+        }
+
+        $pattern = preg_quote($this->pattern, '/');
+
+        if ($this->exact_match) {
+            $pattern = '/^' . $pattern . '$/';
+            return preg_match($pattern, $transaction->{$this->field_name}) > 0;
+        }
+
+        $pattern = '/' . $pattern . '/';
+        return preg_match($pattern, $transaction->{$this->field_name}) > 0;
+    }
+
+    public function apply(Transaction $transaction): void
+    {
+        $transaction->category_id = $this->category_id;
+        $transaction->update();
+    }
+
+    /**
      * Get the category for the import rule.
      *
      * @return BelongsTo
