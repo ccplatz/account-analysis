@@ -23,7 +23,7 @@ class ImportService
     {
         $mappedData = $this->applyMapping($rawData, $mappings);
         $transactionsData = $this->prepareDataForImport($mappedData, $account);
-        $importRules = ImportRule::all();
+        $importRules = ImportRule::where('account_id', $account->id)->orderBy('sequence', 'desc')->get();
 
         foreach ($transactionsData as $transactionData) {
             $transaction = Transaction::create($transactionData);
