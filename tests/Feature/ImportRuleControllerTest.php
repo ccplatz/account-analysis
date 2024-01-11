@@ -38,4 +38,16 @@ class ImportRuleControllerTest extends TestCase
         $response->assertRedirect(route('import-rules.index'));
         $this->assertDatabaseHas('import_rules', $importRule->toArray());
     }
+
+    public function testThatUserCanDeleteImportRule(): void
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->create();
+        $importRule = ImportRule::factory()->create();
+
+        $response = $this->delete(route('import-rules.destroy', $importRule->id));
+
+        $response->assertRedirect(route('import-rules.index'));
+        $this->assertDatabaseMissing('import_rules', $importRule->toArray());
+    }
 }

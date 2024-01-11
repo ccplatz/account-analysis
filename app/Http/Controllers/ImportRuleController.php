@@ -75,6 +75,8 @@ class ImportRuleController extends Controller
      */
     public function destroy(ImportRule $importRule)
     {
-        //
+        $importRule->delete();
+
+        return redirect()->route('import-rules.index')->with('success', 'Import rule deleted');
     }
 }
