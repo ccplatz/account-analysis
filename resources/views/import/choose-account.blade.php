@@ -2,6 +2,7 @@
 
 @section('content')
     <h1 class="text-center">Choose account for transaction import</h1>
+
     <div class="card my-5">
         <div class="card-header">Accounts</div>
 

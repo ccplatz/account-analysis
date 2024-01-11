@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1 class="text-center">Accounts</h1>
+
     <div class="card my-5">
         <div class="card-header">Create new account</div>
 

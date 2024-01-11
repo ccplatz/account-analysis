@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1 class="text-center">Import files</h1>
+
     <div class="card my-5">
         <div class="card-header">Upload new file</div>
 
