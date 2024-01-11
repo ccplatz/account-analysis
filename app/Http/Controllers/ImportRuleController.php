@@ -19,7 +19,7 @@ class ImportRuleController extends Controller
         return view('import-rules.index')
             ->with(
                 [
-                    'importRules' => ImportRule::all(),
+                    'importRules' => ImportRule::orderBy('account_id', 'asc')->orderBy('priority', 'desc')->get(),
                     'accounts' => Account::all(),
                     'fields' => ImportRule::FIELD_NAMES,
                     'categories' => Category::all(),
