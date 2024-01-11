@@ -27,6 +27,7 @@ class StoreImportRuleRequest extends FormRequest
             'field_name' => 'required',
             'pattern' => 'required',
             'exact_match' => 'sometimes|nullable',
+            'priority' => 'required|numeric',
             'category_id' => 'required|exists:App\Models\Category,id',
         ];
     }

@@ -36,6 +36,14 @@
                         checked>
                     <label for="exactMatchCheck" class="form-check-label">{{ __('Find exact match') }}</label>
                 </div>
+                <div class="mb-3 w-25">
+                    <label for="priorityNumber" class="form-label">
+                        {{ __('Priority') }} <i data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="The higher the number, the earlier the rule is applied"
+                            class="bi bi-info-circle"></i>
+                    </label>
+                    <input type="number" class="form-control" id="priorityNumber" name="priority">
+                </div>
                 <div class="mb-4 w-25">
                     <label for="categorySelect" name="category_id"
                         class="form-label">{{ __('Choose category to set') }}</label>
@@ -63,6 +71,12 @@
                         <th scope="col">{{ __('Field') }}</th>
                         <th scope="col">{{ __('Pattern') }}</th>
                         <th scope="col">{{ __('Exact match') }}</th>
+                        <th scope="col">
+                            {{ __('Priority') }}
+                            <i data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-title="The higher the number, the earlier the rule is applied"
+                                class="bi bi-info-circle"></i>
+                        </th>
                         <th scope="col">{{ __('Category') }}</th>
                         <th scope="col">{{ __('Action') }}</th>
                     </tr>
@@ -75,6 +89,7 @@
                             <td>{{ $rule->field_name_public }}</td>
                             <td>{{ Str::limit($rule->pattern, 20, '...') }}</td>
                             <td>{{ $rule->exact_match }}</td>
+                            <td>{{ $rule->priority }}</td>
                             <td>{{ $rule->category->description }}</td>
                             <td>
                                 <a href="{{ route('import-rules.destroy', $rule) }}"

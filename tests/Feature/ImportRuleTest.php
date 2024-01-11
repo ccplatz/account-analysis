@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class ImportRuleTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testThatRuleNotAppliesOnTransactionWithDifferentAccount(): void
     {
         $account1 = Account::factory()->create();

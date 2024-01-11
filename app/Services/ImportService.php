@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Account;
+use App\Models\ImportRule;
 use App\Models\Transaction;
 use Brick\Math\Exception\NumberFormatException;
 use Carbon\Carbon;
@@ -21,10 +22,16 @@ class ImportService
     public function storeTransactions(array $rawData, Account $account, array $mappings)
     {
         $mappedData = $this->applyMapping($rawData, $mappings);
-        $transactions = $this->prepareDataForImport($mappedData, $account);
+        $transactionsData = $this->prepareDataForImport($mappedData, $account);
+        $importRules = ImportRule::all();
 
-        foreach ($transactions as $transaction) {
-            Transaction::create($transaction);
+        foreach ($transactionsData as $transactionData) {
+            $transaction = Transaction::create($transactionData);
+            foreach ($importRules as $rule) {
+                if ($rule->applies($transaction)) {
+                    $rule->apply($transaction);
+                }
+            }
         }
 
         return;

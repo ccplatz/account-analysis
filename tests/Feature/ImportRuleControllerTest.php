@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class ImportRuleControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testThatImportRulesAreOnTheMenu(): void
     {
         $response = $this->get('/');
