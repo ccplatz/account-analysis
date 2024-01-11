@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Account;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +16,8 @@ class TransactionTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->transaction = Transaction::first();
+        $account = Account::factory()->create();
+        $this->transaction = Transaction::factory()->create(['account_id' => $account->id]);
     }
 
     public function testDeleteTransaction(): void

@@ -17,6 +17,7 @@ class CategoryTest extends TestCase
 
     public function testCategoriesShownOnIndex(): void
     {
+        $category = Category::factory()->create();
         $expected = Category::first()->description;
 
         $response = $this->get(route('categories.index'));
