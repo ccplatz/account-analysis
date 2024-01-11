@@ -17,7 +17,7 @@ class ImportRule extends Model
         'field_name',
         'pattern',
         'exact_match',
-        'priority',
+        'sequence',
         'category_id',
     ];
 

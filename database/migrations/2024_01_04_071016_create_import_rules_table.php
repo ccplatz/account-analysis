@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('field_name');
             $table->string('pattern', 1000);
             $table->boolean('exact_match')->default(false);
-            $table->integer('priority')->default(0);
+            $table->integer('sequence')->default(0);
             $table->foreignIdFor(Category::class);
             $table->timestamps();
         });

@@ -26,7 +26,7 @@ class ImportRuleFactory extends Factory
             'field_name' => Arr::random(ImportRule::FIELD_NAMES),
             'pattern' => $this->faker->word,
             'exact_match' => 1,
-            'priority' => $this->faker->numberBetween(1, 10),
+            'sequence' => $this->faker->numberBetween(1, 10),
             'category_id' => Category::first()->id,
         ];
     }
