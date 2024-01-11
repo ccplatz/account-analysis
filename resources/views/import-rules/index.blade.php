@@ -88,7 +88,7 @@
                             <td>{{ $rule->account->description }}</td>
                             <td>{{ $rule->field_name_public }}</td>
                             <td>{{ Str::limit($rule->pattern, 20, '...') }}</td>
-                            <td>{{ $rule->exact_match }}</td>
+                            <td>{{ $rule->exact_match ? __('yes') : __('no') }}</td>
                             <td>{{ $rule->priority }}</td>
                             <td>{{ $rule->category->description }}</td>
                             <td>
