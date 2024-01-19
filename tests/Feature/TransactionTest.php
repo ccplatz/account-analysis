@@ -17,6 +17,8 @@ class TransactionTest extends TestCase
     {
         parent::setUp();
         $account = Account::factory()->create();
+        $category1 = Category::factory()->create();
+        $category2 = Category::factory()->create();
         $this->transaction = Transaction::factory()->create(['account_id' => $account->id]);
     }
 

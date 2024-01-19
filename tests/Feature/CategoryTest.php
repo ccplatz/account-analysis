@@ -35,6 +35,7 @@ class CategoryTest extends TestCase
 
     public function testCategorySumShownOnOverview(): void
     {
+        $category = Category::factory()->create();
         $expected = number_format(Category::first()->transactions->sum('value'), 2, ',', '.');
 
         $response = $this->get(route('categories.index'));
@@ -44,6 +45,7 @@ class CategoryTest extends TestCase
 
     public function testCategoryNumberOfTransactionsShownOnOverview(): void
     {
+        $category = Category::factory()->create();
         $expected = Category::first()->transactions->count();
 
         $response = $this->get(route('categories.index'));

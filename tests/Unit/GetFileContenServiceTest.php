@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class GetFileContenServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic feature test example.
      */
